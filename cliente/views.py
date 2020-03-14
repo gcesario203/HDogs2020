@@ -29,7 +29,10 @@ def submit_login(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('/')
+            if request.user.is_superuser:
+                return redirect('/admin/')
+            else:
+                return redirect('/')
         else:
             messages.error(request, 'usuário invalido')
     return redirect('/login/')
