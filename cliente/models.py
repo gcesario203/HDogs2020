@@ -106,7 +106,7 @@ class Pet(models.Model):
         verbose_name_plural = 'mascotes'
 
     def __str__(self):
-        return "Pet: "+self._nome_pet+ " - Dono:"+self._dono._nome
+        return self._nome_pet+ " - Dono:"+self._dono._nome
 
 
 
@@ -152,7 +152,10 @@ class Pet(models.Model):
 
     @dono.setter
     def dono(self,valor):
-        self._dono = valor
+        if valor is Cliente:
+            self._dono = valor
+        else:
+            raise ValueError('Cliente indisponível')
 
     @property
     def raca(self):
@@ -176,4 +179,4 @@ class Pet(models.Model):
     
     @servicos.setter
     def servicos(self,valor):
-        self._servicos = valor
+        self._servicos = valors
