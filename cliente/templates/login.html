@@ -27,16 +27,31 @@
 
     .form{
         background-color:whitesmoke;
-        padding: 50px;
+        margin-bottom: 200px;
+        padding: 40px;
         border-radius: 20px;
     }
 
-    .conteudo h2{
-        font-size: 50px;
+    .header-req{
+        border-color:white;
         max-width: 100%;
         max-height: 100%;
-        width: 250px;
+        width: auto;
         border-radius: 10px;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .header-req img{
+        border-radius: 10px;
+        align-items: initial;
+        width: 200px;
+    }
+
+    .header-req h1{
+        padding-right: 10px;
+        font-size: 30px;
     }
 
     .req {
@@ -79,7 +94,9 @@
 <body>
     <div class="conteudo">
         <form  class="form"action="submit" method="post">{%csrf_token%}
-            <h2 align="center">Hotel de cachorro</h2>
+            <div class="header-req">
+                <img class="logo" src="{% static 'logo-login.png' %}" alt="My image">
+            </div>
             <div class="req">
                 <label for="username">Usuário</label>
                 <input type="text" placeholder="Usuário",id="username" name="username">

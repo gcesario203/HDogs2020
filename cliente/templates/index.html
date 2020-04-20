@@ -1,0 +1,74 @@
+{%load static%}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ola  </title>
+</head>
+<style>
+      body{
+        background-color:mistyrose;
+    }
+    .conteudo{
+        font-size: 35px;
+        background-color:white;
+        max-width: 100%;
+        max-width: 100%;
+        width: 800px;
+        height: 700px;
+        padding: 50px 600px 50px 50px;
+        margin: auto;
+        border-radius: 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .header{
+        background-color: whitesmoke;
+        margin: 10px 80px 30px 80px;
+        border-radius: 20px;
+    }
+
+    .header header{
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .header .title{
+        margin:20px 600px 20px 20px;
+        padding: 4px 40px 4px 40px;
+        border-radius: 20px;
+        background-color: tomato;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+    }
+
+
+    .logo{
+        width: 200px;
+    }
+    .footer{
+        background-color: whitesmoke;
+        margin: 10px 80px 30px 80px;
+    }
+</style>
+<body>
+    <div class="header">
+        <header>
+            <img class="logo" src="{% static 'logo.png' %}" alt="My image">
+            <div class="title">
+                <h1>Hotel de cachorro</h1>
+            </div>
+        </header>
+    </div>
+    <div class="conteudo">
+        <button><a href="/logout/">Sair</a></button>
+    </div>
+    <div class="footer">
+        <footer>
+            <h2>Ciência da Computação - 2020</h2>
+        </footer>
+    </div>
+</body>
+</html>
