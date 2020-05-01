@@ -5,4 +5,5 @@ Gabriel Palheiro dos Santos
 Pedro Trinca
 Marcos Bastos Garcia
 
-OBS: rota de login funcionando para acessar admin caso superuser
+OBS: CRUD de cliente e pet quase completos, sendo que em pets falta apenas rota para alteras os campos e o cliente rotas
+para deleção de cadastro e alteração do mesmo
