@@ -35,6 +35,7 @@
         border-radius: 10px;
         justify-content: space-around;
     }
+
     .logo{
         height: 100%;
     }
@@ -81,7 +82,8 @@
         margin:5px 80px 5px 80px;
         background-color:white;
         display: grid;
-        grid-template-columns: repeat(2,1fr);
+        grid-template-columns: 1fr;
+        grid-gap: 24px;
         border:solid 1px black;
     }
     .pet{
@@ -89,6 +91,11 @@
         border:solid 1px black;
         padding:20px;
         background-color:lightgray;
+        font-size: 30px;
+    }
+
+    .botoes{
+        margin-left:20px;
     }
     .footer{
         grid-area:rodape;
@@ -109,17 +116,19 @@
             </ul>
     </div>
     <div class="conteudo">
-        {%for x in pet %}
         <div class="pet">
-            <h3>ID:{{x.id}}</h3>
-            <h3>Nome:{{x.nome_pet}}</h3>
-            <h3>Tipo:{{x.tipo}}</h3>
-            <h3>Data de entrada:{{x.data_entrada}}</h3>
-            <button class="detalhes"><a href="pet/datalhe/{{x.id}}/">Detalhes</a></button>
-            <button class="logout"><a href="pet/delete/{{x.id}}/">Deletar</a></button>
+            <h3>Nome:{{pet.nome_pet}}</h3>
+            <h3>Tipo:{{pet.tipo}}</h3>
+            <h3>Espécie:{{pet.especie}}</h3>
+            <h3>Ração:{{pet.racao}}</h3>
+            <h3>Data de entrada:{{pet.data_entrada}}</h3>
+            <h3>Serviços:{{pet.servicos}}</h3>
         </div>
-        {%endfor%}
-       </div>
+        <div class="botoes">
+            <button class=""><a href="/">Retornar a lista</a></button>
+            <button class=""><a href="/pet/delete/{{pet.id}}/">Deletar</button>
+        </div>
+    </div>
     <div class="footer">
         <footer>
             <h2>Ciência da Computação - 2020</h2>

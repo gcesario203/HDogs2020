@@ -20,7 +20,13 @@ from cliente import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', views.login_user),
+    path('pet/datalhe/<id>/', views.pet_detalhe),
+    path('pet/register/', views.register_pet),
+    path('pet/register/submit', views.set_pet),
+    path('pet/delete/<id>/', views.pet_delete),
     path('login/submit', views.submit_login),
+    path('novo-cliente/', views.register_cliente),
+    path('novo-cliente/submit', views.set_cliente),
     path('logout/', views.logout_user),
     path('', views.index),
 

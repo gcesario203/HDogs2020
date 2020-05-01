@@ -1,12 +1,13 @@
 from django.db import models
 from enum import Enum
 from django_enum_choices.fields import EnumChoiceField
+from django.contrib.auth.models import User
 
 
 class Pessoa(models.Model):
     _CPF = models.CharField(max_length=16, blank=False,null=False)
     _nome = models.CharField("Nome",max_length=100,blank=False,null=False)
-    _email = models.EmailField("E-Mail",max_length=200,blank=True, null=False)
+    _email = models.EmailField("E-Mail",max_length=200,blank=True, null=False, unique=True)
     _tel = models.CharField("Telefone",max_length=20,blank=True,null=True)
 
 
@@ -78,6 +79,7 @@ class Monitor(Administrador,Pessoa):
 
 
 class Cliente(Pessoa):
+    user = models.OneToOneField(User, verbose_name="Usuario",on_delete=models.CASCADE, null=True)
     class Meta:
         verbose_name = 'cliente'
         verbose_name_plural = 'clientes'
@@ -85,19 +87,23 @@ class Cliente(Pessoa):
     def __str__(self):
         return self._nome
 
-class Porte(Enum):
-    Pequeno = 'P'
-    Medio = 'M'
-    Grande = 'G'
 
+PEQUENO = 1
+MEDIO = 2
+GRANDE = 3
 
+PORTE_MASCOTE = [
+(1, 'Pequeno'),
+(2, 'Médio'),
+(3,'Grande')
+]
 class Pet(models.Model):
     _nome_pet = models.CharField("Nome do pet",max_length=30,blank=False,null=False)
     _tipo = models.CharField("Tipo",max_length=50,blank=False,null=False,default="Cachorro")
-    _porte = EnumChoiceField(Porte, verbose_name="Porte",blank=False)
+    _porte = models.PositiveIntegerField("porte do mascote",choices=PORTE_MASCOTE,default=PEQUENO)
     _especie = models.CharField("Espécie:",max_length=50,blank=False,null=True)
     _racao = models.CharField("Ração",max_length=30,blank=False, null=False)
-    data_entrada = models.DateTimeField(verbose_name="Data de entrada",blank=False)
+    data_entrada = models.DateField(verbose_name="Data de entrada",auto_now_add=True)
     _dono = models.ForeignKey(Cliente, verbose_name="Dono",on_delete=models.CASCADE,blank=False)
     _servicos = models.TextField("Serviços",max_length=400,blank=True)
 
@@ -107,8 +113,6 @@ class Pet(models.Model):
 
     def __str__(self):
         return self._nome_pet+ " - Dono:"+self._dono._nome
-
-
 
     @property
     def nome_pet(self):
@@ -130,19 +134,19 @@ class Pet(models.Model):
 
     @property
     def porte(self):
-        for code,label in Porte:
+        for code,label in PORTE_MASCOTE:
             if self._porte == code:
                 break
         return label
 
     @porte.setter
     def porte(self,valor):
-        if valor == 'p' or 'P':
-            self._porte = Porte.Pequeno
-        elif valor == 'm' or 'M':
-            self._porte = Porte.Medio
-        elif valor == 'g' or 'G':
-            self._porte = Porte.Grande
+        if valor == 'Pequeno':
+            self._porte = PEQUENO
+        elif valor == 'Medio':
+            self._porte = MEDIO
+        elif valor == 'Grande':
+            self._porte = GRANDE
         else:
             raise ValueError('Porte inválido, selecione entre pequeno(P ou p),médio(m ou M) ou grande(g ou G)')
 
@@ -158,12 +162,12 @@ class Pet(models.Model):
             raise ValueError('Cliente indisponível')
 
     @property
-    def raca(self):
-        return self._raca
+    def especie(self):
+        return self._especie
 
-    @raca.setter
-    def raca(self,valor):
-        self._raca = valor
+    @especie.setter
+    def especie(self,valor):
+        self._especie = valor
 
     @property
     def racao(self):
@@ -179,4 +183,4 @@ class Pet(models.Model):
     
     @servicos.setter
     def servicos(self,valor):
-        self._servicos = valors
+        self._servicos = valor

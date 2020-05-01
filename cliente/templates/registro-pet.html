@@ -82,13 +82,8 @@
         background-color:white;
         display: grid;
         grid-template-columns: repeat(2,1fr);
+        grid-gap: 24px;
         border:solid 1px black;
-    }
-    .pet{
-        margin:20px;
-        border:solid 1px black;
-        padding:20px;
-        background-color:lightgray;
     }
     .footer{
         grid-area:rodape;
@@ -104,21 +99,47 @@
     </div>
     <div class="nav">
             <ul class="nav-1">
-                <li class='cadastro'><a href="/pet/register/">Cadastrar novo pet</a></li>
+                <li class='cadastro'><a href="/">Retornar a lista</a></li>
                 <li class='logout'><a href="/logout/">Encerrar sessão</a></li>
             </ul>
     </div>
     <div class="conteudo">
-        {%for x in pet %}
         <div class="pet">
-            <h3>ID:{{x.id}}</h3>
-            <h3>Nome:{{x.nome_pet}}</h3>
-            <h3>Tipo:{{x.tipo}}</h3>
-            <h3>Data de entrada:{{x.data_entrada}}</h3>
-            <button class="detalhes"><a href="pet/datalhe/{{x.id}}/">Detalhes</a></button>
-            <button class="logout"><a href="pet/delete/{{x.id}}/">Deletar</a></button>
+            <h1>Cadastrar novo pet</h1>
+            <div class="formulario">
+            <form enctype="multipart/form-data" action="submit", method="POST">{% csrf_token %}
+                <div class="campo">
+                    <label for="_nome_pet">Nome do pet</label>
+                    <input type="text" name="_nome_pet">
+                </div>
+                <div class="campo">
+                    <label for="_tipo">Tipo</label>
+                    <input type="text" name="_tipo">
+                </div>
+                <div class="campo">
+                    <label for="_especie">Espécie</label>
+                    <input type="text" name="_especie">
+                </div>
+                <div class="campo">
+                    <label for="PEQUENO">Pequeno</label>
+                    <input type="radio" name="_porte" value=1>
+                    <label for="MEDIO">Medio</label>
+                    <input type="radio" name="_porte" value=2>
+                    <label for="Grande">Grande</label>
+                    <input type="radio" name="_porte" value=3>
+                </div>
+                <div class="campo">
+                    <label for="_racao">Ração</label>
+                    <input type="text" name="_racao">
+                </div>
+                <div class="campo">
+                    <label for="_servicos">Serviços</label>
+                    <textarea rows="5" name="_servicos"></textarea>
+                </div>
+                <button class="cadastro" type="submit">Cadastrar</button>
+            </div>
+            </form>
         </div>
-        {%endfor%}
        </div>
     <div class="footer">
         <footer>

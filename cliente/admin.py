@@ -7,7 +7,7 @@ class ListaPet(admin.ModelAdmin):
 
 
 class ListaCliente(admin.ModelAdmin):
-    list_display = ['_nome' , '_email','_tel']
+    list_display = ['_nome' , '_email','_tel','user']
 
 
 class ListaAdm(admin.ModelAdmin):
