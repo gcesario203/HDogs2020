@@ -15,24 +15,45 @@ def index(request):
 
 @login_required(login_url='/login/')
 def register_pet(request):
-    cliente = Cliente.objects.get(user = request.user)
-    return render(request, 'registro-pet.html',{'cliente':cliente})
+    pet_id = request.GET.get('id')
+
+    if pet_id:
+        cliente = Cliente.objects.get(user = request.user)
+        pet = Pet.objects.get(_dono = cliente, id=pet_id)
+        return render(request, 'registro-pet.html',{'cliente':cliente,'pet':pet})
+    else:
+        cliente = Cliente.objects.get(user = request.user)
+        return render(request, 'registro-pet.html',{'cliente':cliente})
 
 @login_required(login_url='/login/')
 def set_pet(request):
     cliente = Cliente.objects.get(user = request.user)
     nome = request.POST.get('_nome_pet')
     tipo = request.POST.get('_tipo')
+    pet_id = request.POST.get('pet-id')
     especie = request.POST.get('_especie')
     porte = request.POST.get('_porte')
     racao = request.POST.get('_racao')
     servicos = request.POST.get('_servicos')
     dono = cliente
 
-    pet = Pet.objects.create(_nome_pet=nome,_tipo=tipo,_porte=porte,_especie=especie,_racao=racao,_dono=dono,_servicos=servicos)
-    url = '/pet/datalhe/{}/'.format(pet.id)
+    if pet_id:
+        pet = Pet.objects.get(_dono = cliente, id=pet_id)
+        pet._nome_pet = nome
+        pet._tipo = tipo
+        pet._especie = especie
+        pet._porte = porte
+        pet._racao = racao
+        pet._servicos = servicos
 
-    return redirect(url)
+        pet.save()
+
+        return redirect('/pet/datalhe/{}/'.format(pet.id))
+    else:
+        pet = Pet.objects.create(_nome_pet=nome,_tipo=tipo,_porte=porte,_especie=especie,_racao=racao,_dono=dono,_servicos=servicos)
+        url = '/pet/datalhe/{}/'.format(pet.id)
+
+        return redirect(url)
 
 @login_required(login_url='/login/')
 def pet_delete(request,id):
@@ -49,6 +70,29 @@ def pet_detalhe(request,id):
     pet = Pet.objects.get(_dono = cliente, id =id)
     return render(request, 'pet.html',{'pet':pet,'cliente':cliente})
 
+@login_required(login_url='/login/')
+def pagina_cliente(request, id):
+    cliente = Cliente.objects.get(user = request.user, id=id)
+    pet = Pet.objects.filter(_dono = cliente)
+    return render(request, 'cliente.html',{'pet':pet,'cliente':cliente})
+
+@login_required(login_url='/login/')
+def cliente_delete(request,id):
+    cliente = Cliente.objects.get(user = request.user,id=id)
+    user = request.user
+    cliente.delete()
+    user.delete()
+
+    return redirect('/login/')
+
+@login_required(login_url='/login/')
+def monitor(request):
+    monitor = Monitor.objects.get(user = request.user)
+    cliente = Cliente.objects.get(monitor_escolhido = monitor)
+    pet = Pet.objects.get(_dono = cliente)
+
+    return render(request, 'monitor.html',{'cliente':cliente,'monitor':monitor,'pet':pet})
+
 def logout_user(request):
     print(request.user)
     logout(request)
@@ -59,24 +103,48 @@ def login_user(request):
     return render(request, 'login.html')
 
 def register_cliente(request):
+    cliente_id = request.GET.get('id')
+    if cliente_id:
+        cliente = Cliente.objects.get(id = cliente_id)
+        if cliente.user == request.user:
+            return render(request, 'registro-cliente.html', {'cliente':cliente})
     return render(request, 'registro-cliente.html')
 
 def set_cliente(request):
     username = request.POST.get('username')
     nome = request.POST.get('_nome')
     cpf = request.POST.get('_CPF')
+    cliente_id = request.POST.get('cliente-id')
     email = request.POST.get('_email')
     tel = request.POST.get('_tel')
 
-    if request.POST.get('password') == request.POST.get('Cpassword'):
-        user = User.objects.create(username=username,password=password,email=email)
-        user.set_password(password)
-        user.save()
-        cliente = Cliente.objects.create(_CPF=cpf,_nome=nome,_email=email,_tel=tel,user=user)
-        return redirect('/login/')
+    if cliente_id:
+        cliente = Cliente.objects.get(id = cliente_id)
+        if request.user == cliente.user:
+            cliente.email = email
+            cliente.nome = nome
+            cliente.CPF = cpf
+            cliente.user.username = username
+            if request.POST.get('password') == request.POST.get('Cpassword'):
+                password = request.POST.get('password')
+                cliente.user.set_password(password)
+                cliente.user.save()
+                cliente.save()
+                return redirect('/')
+            else:
+                messages.error(request, 'Senhas não se coincidem')
+        return redirect('/')
     else:
-        messages.error(request, 'Senhas não se coincidem')
-    return redirect('/novo-cliente/')
+        if request.POST.get('password') == request.POST.get('Cpassword'):
+            password = request.POST.get('password')
+            user = User.objects.create(username=username,password=password,email=email)
+            user.set_password(password)
+            user.save()
+            cliente = Cliente.objects.create(_CPF=cpf,_nome=nome,_email=email,_tel=tel,user=user)
+            return redirect('/login/')
+        else:
+            messages.error(request, 'Senhas não se coincidem')
+        return redirect('/novo-cliente/')
 
 
 @csrf_protect

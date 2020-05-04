@@ -35,6 +35,7 @@
         border-radius: 10px;
         justify-content: space-around;
     }
+
     .logo{
         height: 100%;
     }
@@ -53,10 +54,9 @@
     .nav-1{
         display: grid;
         list-style: none;
-        grid-template-columns: 1fr 1fr 1fr;
-        grid-gap: 10px;
+        grid-template-columns: 1fr 1fr;
         grid-template-areas: 
-        'botao-1 botao-3 botao-2';
+        'botao-1 botao-2';
     }
     .nav-1 .cadastro{
         grid-area:botao-1;
@@ -72,13 +72,6 @@
         background-color:tomato;
         border-radius: 5px;
     }
-    .nav-1 .minha-pagina{
-        grid-area:botao-3;
-        padding:4px;
-        border:solid 1px black;
-        background-color:white;
-        border-radius: 5px;
-    }
     a{
         text-decoration: none;
         font-size: 18px;
@@ -89,7 +82,8 @@
         margin:5px 80px 5px 80px;
         background-color:white;
         display: grid;
-        grid-template-columns: repeat(2,1fr);
+        grid-template-columns: 1fr;
+        grid-gap: 24px;
         border:solid 1px black;
     }
     .pet{
@@ -97,6 +91,11 @@
         border:solid 1px black;
         padding:20px;
         background-color:lightgray;
+        font-size: 30px;
+    }
+
+    .botoes{
+        margin-left:20px;
     }
     .footer{
         grid-area:rodape;
@@ -107,29 +106,29 @@
 <body>
     <div class="header">
             <img class="logo" src="{% static 'logo.png' %}" alt="My image">
-            <h1 class="user">Ola,{{cliente.nome}}</h1>
+            <h1 class="user">Ola,{{monitor.nome}}</h1>
             <h1 class="title">Hotel de cachorro</h1>
     </div>
     <div class="nav">
             <ul class="nav-1">
                 <li class='cadastro'><a href="/pet/register/">Cadastrar novo pet</a></li>
-                <li class='minha-pagina'><a href="/minha-pagina/{{cliente.id}}">Minha página</a></li>
                 <li class='logout'><a href="/logout/">Encerrar sessão</a></li>
             </ul>
     </div>
     <div class="conteudo">
-        {%for x in pet %}
         <div class="pet">
-            <h3>ID:{{x.id}}</h3>
-            <h3>Nome:{{x.nome_pet}}</h3>
-            <h3>Tipo:{{x.tipo}}</h3>
-            <h3>Data de entrada:{{x.data_entrada}}</h3>
-            <button class="detalhes"><a href="pet/datalhe/{{x.id}}/">Detalhes</a></button>
-            <button class="detalhes"><a href="pet/register/?id={{x.id}}">Alterar</a></button>
-            <button class="logout"><a href="pet/delete/{{x.id}}/">Deletar</a></button>
+            <h3>Nome:{{pet.nome_pet}}</h3>
+            <h3>Tipo:{{pet.tipo}}</h3>
+            <h3>Espécie:{{pet.especie}}</h3>
+            <h3>Ração:{{pet.racao}}</h3>
+            <h3>Data de entrada:{{pet.data_entrada}}</h3>
+            <h3>Serviços:{{pet.servicos}}</h3>
         </div>
-        {%endfor%}
-       </div>
+        <div class="botoes">
+            <button class=""><a href="/">Retornar a lista</a></button>
+            <button class=""><a href="/pet/delete/{{pet.id}}/">Deletar</button>
+        </div>
+    </div>
     <div class="footer">
         <footer>
             <h2>Ciência da Computação - 2020</h2>

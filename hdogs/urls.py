@@ -26,8 +26,11 @@ urlpatterns = [
     path('pet/delete/<id>/', views.pet_delete),
     path('login/submit', views.submit_login),
     path('novo-cliente/', views.register_cliente),
+    path('minha-pagina/<id>', views.pagina_cliente),
+    path('minha-pagina/delete/<id>', views.cliente_delete),
     path('novo-cliente/submit', views.set_cliente),
     path('logout/', views.logout_user),
+    path('login/monitor/', views.monitor),
     path('', views.index),
 
 

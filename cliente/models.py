@@ -80,6 +80,7 @@ class Monitor(Administrador,Pessoa):
 
 
 class Cliente(Pessoa):
+    monitor_escolhido = models.ForeignKey(Monitor, verbose_name="Monitor responsável", on_delete=models.CASCADE, null=True,blank=True)
     class Meta:
         verbose_name = 'cliente'
         verbose_name_plural = 'clientes'

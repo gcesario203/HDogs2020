@@ -5,7 +5,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Novo cliente</title>
+    <title>
+        {%if cliente%}
+            Olá, {{cliente.nome}}
+        {%else%}
+            Novo cliente
+        {%endif%}
+    </title>
 </head>
 <style>
     *{
@@ -55,7 +61,7 @@
         list-style: none;
         grid-template-columns: 1fr 1fr;
         grid-template-areas: 
-        'botao-1 botao-2';
+        'botao-2';
     }
     .nav-1 .cadastro{
         grid-area:botao-1;
@@ -94,23 +100,41 @@
 <body>
     <div class="header">
             <img class="logo" src="{% static 'logo.png' %}" alt="My image">
-            <h1 class="user">Novo cliente</h1>
+            <h1 class="user">
+                {%if cliente%}
+                    Olá, {{cliente.nome}}
+                {%else%}
+                    Novo cliente
+                {%endif%}
+            </h1>
             <h1 class="title">Hotel de cachorro</h1>
     </div>
     <div class="nav">
+        {%if cliente%}
             <ul class="nav-1">
-                <li class='cadastro'><a href="/">Retornar a lista</a></li>
-                <li class='logout'><a href="/logout/">Encerrar sessão</a></li>
+                <li class='logout'><a href="/minha-pagina/{{cliente.id}}">Retornar a sua pagina</a></li>
             </ul>
+        {%else%}
+            <ul class="nav-1">
+                <li class='logout'><a href="/login/">Retornar ao login</a></li>
+            </ul>
+        {%endif%}
     </div>
     <div class="conteudo">
         <div class="pet">
-            <h1>Cadastrar novo cliente</h1>
+            <h1>
+                {%if cliente%}
+                    Mudar dados existentes
+                {%else%}
+                    Cadastrar novo cliente
+                {%endif%}
+            </h1>
             <div class="formulario">
             <form enctype="multipart/form-data" action="submit", method="POST">{% csrf_token %}
+                <input type="number" class="form-control" name="cliente-id" value="{{cliente.id}}" hidden>
                 <div class="campo">
                     <label for="username">Usuário</label>
-                    <input type="text" name="username">
+                    <input type="text" name="username" value="{{cliente.user.username}}">
                 </div>
                 <div class="campo">
                     <label for="password">Senha</label>
@@ -122,26 +146,32 @@
                 </div>
                 <div class="campo">
                     <label for="_nome">Nome</label>
-                    <input type="text" name="_nome">
+                    <input type="text" name="_nome" value="{{cliente.nome}}">
                 </div>
                 <div class="campo">
                     <label for="_CPF">CPF</label>
-                    <input type="text" name="_CPF">
+                    <input type="text" name="_CPF"value="{{cliente.CPF}}">
                 </div>
                 <div class="campo">
                     <label for="_email">E-mail</label>
-                    <input type="email" name="_email">
+                    <input type="email" name="_email" value="{{cliente.email}}"> 
                 </div>
                 <div class="campo">
                     <label for="_tel">Telefone</label>
-                    <input type="text" name="_tel">
+                    <input type="text" name="_tel" value="{{cliente.tel}}">
                 </div>
                 {%for message in messages%}
-                <div class="errp">
+                <div class="erro">
                     <strong>Erro:</strong>{{message}}
                 </div>
                 {%endfor%}
-                <button class="cadastro" type="submit">Cadastrar</button>
+                <button class="cadastro" type="submit">
+                    {%if cliente%}
+                        Alterar
+                    {%else%}
+                        Cadastrar
+                    {%endif%}
+                </button>
             </div>
             </form>
         </div>
