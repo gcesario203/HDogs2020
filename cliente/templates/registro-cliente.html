@@ -117,6 +117,10 @@
                     <input type="password" name="password">
                 </div>
                 <div class="campo">
+                    <label for="Cpassword">Confirme sua senha</label>
+                    <input type="password" name="Cpassword">
+                </div>
+                <div class="campo">
                     <label for="_nome">Nome</label>
                     <input type="text" name="_nome">
                 </div>
@@ -132,6 +136,11 @@
                     <label for="_tel">Telefone</label>
                     <input type="text" name="_tel">
                 </div>
+                {%for message in messages%}
+                <div class="errp">
+                    <strong>Erro:</strong>{{message}}
+                </div>
+                {%endfor%}
                 <button class="cadastro" type="submit">Cadastrar</button>
             </div>
             </form>

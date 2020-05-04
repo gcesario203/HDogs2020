@@ -63,18 +63,20 @@ def register_cliente(request):
 
 def set_cliente(request):
     username = request.POST.get('username')
-    password = request.POST.get('password')
     nome = request.POST.get('_nome')
     cpf = request.POST.get('_CPF')
     email = request.POST.get('_email')
     tel = request.POST.get('_tel')
 
-    user = User.objects.create(username=username,password=password,email=email)
-    user.set_password(password)
-    user.save()
-    cliente = Cliente.objects.create(_CPF=cpf,_nome=nome,_email=email,_tel=tel,user=user)
-
-    return redirect('/login/')
+    if request.POST.get('password') == request.POST.get('Cpassword'):
+        user = User.objects.create(username=username,password=password,email=email)
+        user.set_password(password)
+        user.save()
+        cliente = Cliente.objects.create(_CPF=cpf,_nome=nome,_email=email,_tel=tel,user=user)
+        return redirect('/login/')
+    else:
+        messages.error(request, 'Senhas não se coincidem')
+    return redirect('/novo-cliente/')
 
 
 @csrf_protect

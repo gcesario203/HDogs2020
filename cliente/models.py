@@ -9,6 +9,7 @@ class Pessoa(models.Model):
     _nome = models.CharField("Nome",max_length=100,blank=False,null=False)
     _email = models.EmailField("E-Mail",max_length=200,blank=True, null=False, unique=True)
     _tel = models.CharField("Telefone",max_length=20,blank=True,null=True)
+    user = models.OneToOneField(User, verbose_name="Usuario",on_delete=models.CASCADE, null=True)
 
 
     class Meta:
@@ -79,7 +80,6 @@ class Monitor(Administrador,Pessoa):
 
 
 class Cliente(Pessoa):
-    user = models.OneToOneField(User, verbose_name="Usuario",on_delete=models.CASCADE, null=True)
     class Meta:
         verbose_name = 'cliente'
         verbose_name_plural = 'clientes'
