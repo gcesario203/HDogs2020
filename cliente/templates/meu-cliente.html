@@ -66,7 +66,7 @@
         border-radius: 4px;
     }
     .nav-1 .logout{
-        grid-area:botao-2;
+        grid-area:botao-1;
         padding:4px;
         border:solid 1px black;
         background-color:tomato;
@@ -82,7 +82,7 @@
         margin:5px 80px 5px 80px;
         background-color:white;
         display: grid;
-        grid-template-columns: repeat(2,1fr);
+        grid-template-columns: 1fr;
         grid-gap: 24px;
         border:solid 1px black;
     }
@@ -111,21 +111,21 @@
     </div>
     <div class="nav">
             <ul class="nav-1">
-                <li class='cadastro'><a href="/todos-pets/">Todos os pets</a></li>
                 <li class='logout'><a href="/logout/">Encerrar sessão</a></li>
             </ul>
     </div>
     <div class="conteudo">
-        {%for clientes in cliente%}
         <div class="pet">
-            <h3>Nome:{{clientes.nome}}</h3>
-            <h3>Email:{{clientes.email}}</h3>
-            <h3>Telefone:{{clientes.tel}}</h3>
-            <div class="botoes">
-                <button class=""><a href="/meu-cliente/{{clientes.id}}">Detalhes</a></button>
-            </div>
+            <h3>Nome:{{cliente.nome}}</h3>
+            <h3>Email:{{cliente.email}}</h3>
+            <h3>Telefone:{{cliente.tel}}</h3>
+            <h3>Pets cadastrados:{{pet.count}}</h3>
+
         </div>
-        {%endfor%}
+        <div class="botoes">
+            <button class=""><a href="/monitor/">Retornar a lista</a></button>
+            <button class=""><a href="/meu-cliente/{{cliente.id}}/pets/">Mostrar seus pets</a></button>
+        </div>
     </div>
     <div class="footer">
         <footer>

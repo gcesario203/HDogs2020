@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 @login_required(login_url='/login/')
 def index(request):
     cliente = Cliente.objects.get(user = request.user)
-    pet = Pet.objects.filter(_dono = cliente)
+    pet = Pet.objects.filter(dono = cliente)
     return render(request, 'index.html',{'cliente':cliente,'pet':pet})
 
 @login_required(login_url='/login/')
@@ -19,7 +19,7 @@ def register_pet(request):
 
     if pet_id:
         cliente = Cliente.objects.get(user = request.user)
-        pet = Pet.objects.get(_dono = cliente, id=pet_id)
+        pet = Pet.objects.get(dono = cliente, id=pet_id)
         return render(request, 'registro-pet.html',{'cliente':cliente,'pet':pet})
     else:
         cliente = Cliente.objects.get(user = request.user)
@@ -38,7 +38,7 @@ def set_pet(request):
     dono = cliente
 
     if pet_id:
-        pet = Pet.objects.get(_dono = cliente, id=pet_id)
+        pet = Pet.objects.get(dono = cliente, id=pet_id)
         pet._nome_pet = nome
         pet._tipo = tipo
         pet._especie = especie
@@ -50,7 +50,7 @@ def set_pet(request):
 
         return redirect('/pet/datalhe/{}/'.format(pet.id))
     else:
-        pet = Pet.objects.create(_nome_pet=nome,_tipo=tipo,_porte=porte,_especie=especie,_racao=racao,_dono=dono,_servicos=servicos)
+        pet = Pet.objects.create(_nome_pet=nome,_tipo=tipo,_porte=porte,_especie=especie,_racao=racao,dono=dono,_servicos=servicos)
         url = '/pet/datalhe/{}/'.format(pet.id)
 
         return redirect(url)
@@ -58,7 +58,7 @@ def set_pet(request):
 @login_required(login_url='/login/')
 def pet_delete(request,id):
     cliente = Cliente.objects.get(user = request.user)
-    pet = Pet.objects.get(_dono = cliente, id=id)
+    pet = Pet.objects.get(dono = cliente, id=id)
     pet.delete()
 
     return redirect('/')
@@ -67,13 +67,13 @@ def pet_delete(request,id):
 @login_required(login_url='/login/')
 def pet_detalhe(request,id):
     cliente = Cliente.objects.get(user = request.user)
-    pet = Pet.objects.get(_dono = cliente, id =id)
+    pet = Pet.objects.get(dono = cliente, id =id)
     return render(request, 'pet.html',{'pet':pet,'cliente':cliente})
 
 @login_required(login_url='/login/')
 def pagina_cliente(request, id):
     cliente = Cliente.objects.get(user = request.user, id=id)
-    pet = Pet.objects.filter(_dono = cliente)
+    pet = Pet.objects.filter(dono = cliente)
     return render(request, 'cliente.html',{'pet':pet,'cliente':cliente})
 
 @login_required(login_url='/login/')
@@ -88,10 +88,34 @@ def cliente_delete(request,id):
 @login_required(login_url='/login/')
 def monitor(request):
     monitor = Monitor.objects.get(user = request.user)
-    cliente = Cliente.objects.get(monitor_escolhido = monitor)
-    pet = Pet.objects.get(_dono = cliente)
+    cliente = Cliente.objects.filter(monitor_escolhido = monitor)
+    pet = Pet.objects.filter(dono = cliente)
 
     return render(request, 'monitor.html',{'cliente':cliente,'monitor':monitor,'pet':pet})
+
+@login_required(login_url='/login/')
+def detalhe_cliente(request,id):
+    monitor = Monitor.objects.get(user = request.user)
+    cliente = Cliente.objects.get(monitor_escolhido= monitor,id=id)
+    pet = Pet.objects.filter(dono = cliente)
+
+    return render(request, 'meu-cliente.html',{'cliente':cliente,'pet':pet,'monitor':monitor})
+
+@login_required(login_url='/login/')
+def tudo_pet(request,id):
+    monitor = Monitor.objects.get(user = request.user)
+    cliente = Cliente.objects.get(monitor_escolhido = monitor, id=id)
+    pet = Pet.objects.filter(dono = cliente)
+
+    return render(request, 'cliente-pets.html',{'cliente':cliente,'pet':pet,'monitor':monitor})
+
+@login_required(login_url='/login/')
+def hotel_pets(request):
+    monitor = Monitor.objects.get(user = request.user)
+    cliente = Cliente.objects.all()
+    pet = Pet.objects.all()
+
+    return render(request, 'todos-pets.html',{'pet':pet,'monitor':monitor,'cliente':cliente})
 
 def logout_user(request):
     print(request.user)
@@ -109,6 +133,49 @@ def register_cliente(request):
         if cliente.user == request.user:
             return render(request, 'registro-cliente.html', {'cliente':cliente})
     return render(request, 'registro-cliente.html')
+
+def register_monitor(request):
+    return render(request, 'registro-monitor.html')
+
+def set_monitor(request):
+    username = request.POST.get('username')
+    nome = request.POST.get('_nome')
+    cpf = request.POST.get('_CPF')
+    monitor_id = request.POST.get('monitor-id')
+    email = request.POST.get('_email')
+    tel = request.POST.get('_tel')
+    CTPS = request.POST.get('_CTPS')
+
+    if monitor_id:
+        monitor = Monitor.objects.get(id = monitor_id)
+        if request.user == cliente.user:
+            monitor.email = email
+            monitor.nome = nome
+            monitor.CPF = cpf
+            monitor.user.username = username
+            monitor.CTPS = CTPS
+            if request.POST.get('password') == request.POST.get('Cpassword'):
+                password = request.POST.get('password')
+                monitor.user.set_password(password)
+                monitor.user.save()
+                monitor.save()
+                return redirect('/')
+            else:
+                messages.error(request, 'Senhas não se coincidem')
+        return redirect('/')
+    else:
+        if request.POST.get('password') == request.POST.get('Cpassword'):
+            password = request.POST.get('password')
+            user = User.objects.create(username=username,password=password,email=email)
+            user.set_password(password)
+            user.save()
+            monitor = Monitor.objects.create(_CPF=cpf,_nome=nome,_email=email,_tel=tel,user=user,_CTPS=CTPS)
+            return redirect('/login/')
+        else:
+            messages.error(request, 'Senhas não se coincidem')
+        return redirect('/novo-monitor/')
+
+
 
 def set_cliente(request):
     username = request.POST.get('username')
@@ -152,13 +219,17 @@ def submit_login(request):
     if request.POST:
         username = request.POST.get('username')
         password = request.POST.get('password')
+        tipo = request.POST.get('tipos')
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
             if request.user.is_superuser:
                 return redirect('/admin/')
             else:
-                return redirect('/')
+                if tipo == "Cliente":
+                    return redirect('/')
+                elif tipo == "Monitor":
+                    return redirect('/monitor/')
         else:
             messages.error(request, 'Campos não existentes ou incorretos')
     return redirect('/login/')

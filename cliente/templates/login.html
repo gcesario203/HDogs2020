@@ -105,6 +105,15 @@
                 <label for="password">Senha</label>
                 <input type="password"placeholder="Senha", id="password" name="password">
             </div>
+            <div class="req">
+                <label for="tipo">Selecione o tipo de usuário:</label>
+                <select id="tipo" name="tipos">
+                    <option value="Cliente">Cliente</option>
+                    <option value="Monitor">Monitor</option>
+                    <option value="Administrador">Administrador</option>
+                </select>
+
+            </div>
         <div class="comandos">
             {%for message in messages%}
             <div class="error">
@@ -113,6 +122,7 @@
             {%endfor%}
             <button type="submit" class="entrar">Entrar</button>
             <button class="entrar"><a href="/novo-cliente/{{cliente.id}}">Fazer cadastro</a></button>
+            <button class="entrar"><a href="/novo-monitor/{{cliente.id}}">Fazer cadastro</a></button>
         </div>
         </form>
         <div class="img">

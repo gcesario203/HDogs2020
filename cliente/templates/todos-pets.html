@@ -35,7 +35,6 @@
         border-radius: 10px;
         justify-content: space-around;
     }
-
     .logo{
         height: 100%;
     }
@@ -55,6 +54,7 @@
         display: grid;
         list-style: none;
         grid-template-columns: 1fr 1fr;
+        grid-gap: 10px;
         grid-template-areas: 
         'botao-1 botao-2';
     }
@@ -72,6 +72,13 @@
         background-color:tomato;
         border-radius: 5px;
     }
+    .nav-1 .minha-pagina{
+        grid-area:botao-3;
+        padding:4px;
+        border:solid 1px black;
+        background-color:white;
+        border-radius: 5px;
+    }
     a{
         text-decoration: none;
         font-size: 18px;
@@ -83,7 +90,6 @@
         background-color:white;
         display: grid;
         grid-template-columns: repeat(2,1fr);
-        grid-gap: 24px;
         border:solid 1px black;
     }
     .pet{
@@ -91,11 +97,6 @@
         border:solid 1px black;
         padding:20px;
         background-color:lightgray;
-        font-size: 30px;
-    }
-
-    .botoes{
-        margin-left:20px;
     }
     .footer{
         grid-area:rodape;
@@ -111,22 +112,21 @@
     </div>
     <div class="nav">
             <ul class="nav-1">
-                <li class='cadastro'><a href="/todos-pets/">Todos os pets</a></li>
+                <li class='cadastro'><a href="/monitor/">Voltar a lista</a></li>
                 <li class='logout'><a href="/logout/">Encerrar sessão</a></li>
             </ul>
     </div>
     <div class="conteudo">
-        {%for clientes in cliente%}
+        {%for x in pet %}
         <div class="pet">
-            <h3>Nome:{{clientes.nome}}</h3>
-            <h3>Email:{{clientes.email}}</h3>
-            <h3>Telefone:{{clientes.tel}}</h3>
-            <div class="botoes">
-                <button class=""><a href="/meu-cliente/{{clientes.id}}">Detalhes</a></button>
-            </div>
+            <h3>Nome:{{x.nome_pet}}</h3>
+            <h3>Tipo:{{x.tipo}}</h3>
+            <h3>Data de entrada:{{x.data_entrada}}</h3>
+            <h3>Dono:{{x.dono.nome}}</h3>
+            <h3>Monitor escolhido:{{x.dono.monitor_escolhido.nome}}</h3>
         </div>
         {%endfor%}
-    </div>
+       </div>
     <div class="footer">
         <footer>
             <h2>Ciência da Computação - 2020</h2>

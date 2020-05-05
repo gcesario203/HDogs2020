@@ -30,7 +30,12 @@ urlpatterns = [
     path('minha-pagina/delete/<id>', views.cliente_delete),
     path('novo-cliente/submit', views.set_cliente),
     path('logout/', views.logout_user),
-    path('login/monitor/', views.monitor),
+    path('novo-monitor/', views.register_monitor),
+    path('novo-monitor/submit', views.set_monitor),
+    path('monitor/', views.monitor),
+    path('meu-cliente/<id>', views.detalhe_cliente),
+    path('meu-cliente/<id>/pets/', views.tudo_pet),
+    path('todos-pets/', views.hotel_pets),
     path('', views.index),
 
 

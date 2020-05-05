@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 
 class Pessoa(models.Model):
-    _CPF = models.CharField(max_length=16, blank=False,null=False)
+    _CPF = models.CharField(max_length=16, blank=False,null=False, default=0)
     _nome = models.CharField("Nome",max_length=100,blank=False,null=False)
     _email = models.EmailField("E-Mail",max_length=200,blank=True, null=False, unique=True)
     _tel = models.CharField("Telefone",max_length=20,blank=True,null=True)
@@ -69,7 +69,9 @@ class Administrador(Pessoa):
         self._CTPS = valor
 
 
-class Monitor(Administrador,Pessoa):
+class Monitor(Pessoa):
+    administrador = models.ForeignKey(Administrador, verbose_name="Administradores",on_delete=models.CASCADE, null=True,blank=True)
+    _CTPS = models.CharField(max_length=25,blank=True,null=True)
     
     class Meta:
         verbose_name = 'monitor'
@@ -77,6 +79,14 @@ class Monitor(Administrador,Pessoa):
 
     def __str__(self):
         return self.nome + " - Carteira: " + self._CTPS
+
+    @property
+    def CTPS(self):
+        return self._CTPS
+    
+    @CTPS.setter
+    def CTPS(self,valor):
+        self._CTPS = valor
 
 
 class Cliente(Pessoa):
@@ -105,7 +115,7 @@ class Pet(models.Model):
     _especie = models.CharField("Espécie:",max_length=50,blank=False,null=True)
     _racao = models.CharField("Ração",max_length=30,blank=False, null=False)
     data_entrada = models.DateField(verbose_name="Data de entrada",auto_now_add=True)
-    _dono = models.ForeignKey(Cliente, verbose_name="Dono",on_delete=models.CASCADE,blank=False)
+    dono = models.ForeignKey(Cliente, verbose_name="Dono",on_delete=models.CASCADE,blank=False)
     _servicos = models.TextField("Serviços",max_length=400,blank=True)
 
     class Meta:
@@ -150,17 +160,6 @@ class Pet(models.Model):
             self._porte = GRANDE
         else:
             raise ValueError('Porte inválido, selecione entre pequeno(P ou p),médio(m ou M) ou grande(g ou G)')
-
-    @property
-    def dono(self):
-        return self._dono.nome
-
-    @dono.setter
-    def dono(self,valor):
-        if valor is Cliente:
-            self._dono = valor
-        else:
-            raise ValueError('Cliente indisponível')
 
     @property
     def especie(self):
