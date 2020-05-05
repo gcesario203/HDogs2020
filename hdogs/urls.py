@@ -33,6 +33,7 @@ urlpatterns = [
     path('novo-monitor/', views.register_monitor),
     path('novo-monitor/submit', views.set_monitor),
     path('monitor/', views.monitor),
+    path('monitor/<id>', views.monitor_page),
     path('meu-cliente/<id>', views.detalhe_cliente),
     path('meu-cliente/<id>/pets/', views.tudo_pet),
     path('todos-pets/', views.hotel_pets),

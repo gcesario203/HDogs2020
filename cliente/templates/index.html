@@ -118,17 +118,21 @@
             </ul>
     </div>
     <div class="conteudo">
-        {%for x in pet %}
-        <div class="pet">
-            <h3>ID:{{x.id}}</h3>
-            <h3>Nome:{{x.nome_pet}}</h3>
-            <h3>Tipo:{{x.tipo}}</h3>
-            <h3>Data de entrada:{{x.data_entrada}}</h3>
-            <button class="detalhes"><a href="pet/datalhe/{{x.id}}/">Detalhes</a></button>
-            <button class="detalhes"><a href="pet/register/?id={{x.id}}">Alterar</a></button>
-            <button class="logout"><a href="pet/delete/{{x.id}}/">Deletar</a></button>
-        </div>
-        {%endfor%}
+        {%if pet%}
+            {%for x in pet %}
+            <div class="pet">
+                <h3>ID:{{x.id}}</h3>
+                <h3>Nome:{{x.nome_pet}}</h3>
+                <h3>Tipo:{{x.tipo}}</h3>
+                <h3>Data de entrada:{{x.data_entrada}}</h3>
+                <button class="detalhes"><a href="pet/datalhe/{{x.id}}/">Detalhes</a></button>
+                <button class="detalhes"><a href="pet/register/?id={{x.id}}">Alterar</a></button>
+                <button class="logout"><a href="pet/delete/{{x.id}}/">Deletar</a></button>
+            </div>
+            {%endfor%}
+        {%else%}
+            <h1>Nenhum pet cadastrado</h1>
+        {%endif%}
        </div>
     <div class="footer">
         <footer>

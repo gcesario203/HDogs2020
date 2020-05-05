@@ -117,15 +117,19 @@
             </ul>
     </div>
     <div class="conteudo">
-        {%for x in pet %}
-        <div class="pet">
-            <h3>Nome:{{x.nome_pet}}</h3>
-            <h3>Tipo:{{x.tipo}}</h3>
-            <h3>Data de entrada:{{x.data_entrada}}</h3>
-            <h3>Dono:{{x.dono.nome}}</h3>
-            <h3>Monitor escolhido:{{x.dono.monitor_escolhido.nome}}</h3>
-        </div>
-        {%endfor%}
+        {%if pet%}
+            {%for x in pet %}
+            <div class="pet">
+                <h3>Nome:{{x.nome_pet}}</h3>
+                <h3>Tipo:{{x.tipo}}</h3>
+                <h3>Data de entrada:{{x.data_entrada}}</h3>
+                <h3>Dono:{{x.dono.nome}}</h3>
+                <h3>Monitor escolhido:{{x.dono.monitor_escolhido.nome}}</h3>
+            </div>
+            {%endfor%}
+        {%else%}
+            <h1>Nenhuma pet cadastrado</h1>
+        {%endif%}
        </div>
     <div class="footer">
         <footer>

@@ -135,6 +135,11 @@ def register_cliente(request):
     return render(request, 'registro-cliente.html')
 
 def register_monitor(request):
+    monitor_id = request.GET.get('id')
+    if monitor_id:
+        monitor = Monitor.objects.get(id = monitor_id)
+        if monitor.user == request.user:
+            return render(request, 'registro-monitor.html',{'monitor':monitor})
     return render(request, 'registro-monitor.html')
 
 def set_monitor(request):
@@ -174,6 +179,13 @@ def set_monitor(request):
         else:
             messages.error(request, 'Senhas não se coincidem')
         return redirect('/novo-monitor/')
+
+@login_required(login_url='/login/')
+def monitor_page(request,id):
+    monitor = Monitor.objects.get(user = request.user, id=id)
+    cliente = Cliente.objects.filter(monitor_escolhido = monitor)
+
+    return render(request,'monitor-pagina.html',{'cliente':cliente,'monitor':monitor})
 
 
 

@@ -22,7 +22,8 @@
         margin: auto;
         border-radius: 20px;
         display: flex;
-        justify-content: space-between;
+        border:solid 1px black;
+        justify-content: space-between; 
     }
 
     .form{
@@ -89,6 +90,19 @@
 
     .entrar{
         margin-left: 30px;
+        width:100px;
+    }
+    .entrar a{
+        font-size:20px;
+        text-decoration: none;
+        color:black;
+    }
+
+    .select{
+        margin-bottom: 30px;
+    }
+    .select label{
+        font-size:20px;
     }
 </style>
 <body>
@@ -105,7 +119,7 @@
                 <label for="password">Senha</label>
                 <input type="password"placeholder="Senha", id="password" name="password">
             </div>
-            <div class="req">
+            <div class="select">
                 <label for="tipo">Selecione o tipo de usuário:</label>
                 <select id="tipo" name="tipos">
                     <option value="Cliente">Cliente</option>
@@ -121,8 +135,8 @@
             </div>
             {%endfor%}
             <button type="submit" class="entrar">Entrar</button>
-            <button class="entrar"><a href="/novo-cliente/{{cliente.id}}">Fazer cadastro</a></button>
-            <button class="entrar"><a href="/novo-monitor/{{cliente.id}}">Fazer cadastro</a></button>
+            <button class="entrar"><a href="/novo-cliente/{{cliente.id}}">Novo cliente</a></button>
+            <button class="entrar"><a href="/novo-monitor/{{cliente.id}}">Novo monitor</a></button>
         </div>
         </form>
         <div class="img">

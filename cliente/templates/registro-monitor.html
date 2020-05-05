@@ -87,7 +87,7 @@
         margin:5px 80px 5px 80px;
         background-color:white;
         display: grid;
-        grid-template-columns: repeat(2,1fr);
+        grid-template-columns: 1fr;
         grid-gap: 24px;
         border:solid 1px black;
     }
@@ -112,7 +112,7 @@
     <div class="nav">
         {%if monitor%}
             <ul class="nav-1">
-                <li class='logout'><a href="/minha-pagina/{{monitor.id}}">Retornar a sua pagina</a></li>
+                <li class='logout'><a href="/monitor/{{monitor.id}}">Retornar a sua pagina</a></li>
             </ul>
         {%else%}
             <ul class="nav-1">
