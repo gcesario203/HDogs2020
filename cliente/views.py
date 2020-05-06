@@ -118,7 +118,6 @@ def hotel_pets(request):
     return render(request, 'todos-pets.html',{'pet':pet,'monitor':monitor,'cliente':cliente})
 
 def logout_user(request):
-    print(request.user)
     logout(request)
     return redirect('/login/')
 
@@ -235,12 +234,14 @@ def submit_login(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
+            print(type(user))
+            print(type(request.user))
             if request.user.is_superuser:
                 return redirect('/admin/')
             else:
-                if tipo == "Cliente":
+                if hasattr(user,'cliente'):
                     return redirect('/')
-                elif tipo == "Monitor":
+                elif hasattr(user,'monitor'):
                     return redirect('/monitor/')
         else:
             messages.error(request, 'Campos não existentes ou incorretos')

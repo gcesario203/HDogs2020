@@ -5,5 +5,4 @@ Gabriel Palheiro dos Santos
 Pedro Trinca
 Marcos Bastos Garcia
 
-OBS: CRUD de cliente e pet quase completos, sendo que em pets falta apenas rota para alteras os campos e o cliente rotas
-para deleção de cadastro e alteração do mesmo
+OBS: CRUD de Cliente completamente(manipulando completamente o CRUD de pet) e CRUD de monitor(o monitor tem acesso para consulta as informações do cliente atrelado a ele e de todos os pets do banco de dados)
