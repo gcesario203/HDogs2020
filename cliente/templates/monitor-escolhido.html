@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ola,{{monitor.nome}}</title>
+    <title>Ola,{{cliente.nome}}</title>
 </head>
 <style>
     *{
@@ -35,6 +35,7 @@
         border-radius: 10px;
         justify-content: space-around;
     }
+
     .logo{
         height: 100%;
     }
@@ -56,7 +57,7 @@
         grid-template-columns: 1fr 1fr 1fr;
         grid-gap: 10px;
         grid-template-areas: 
-        'botao-1 botao-3 botao-2';
+        'botao-1 botao-2 botao-3';
     }
     .nav-1 .cadastro{
         grid-area:botao-1;
@@ -66,18 +67,18 @@
         border-radius: 4px;
     }
     .nav-1 .logout{
-        grid-area:botao-2;
+        grid-area:botao-3;
         padding:4px;
         border:solid 1px black;
         background-color:tomato;
         border-radius: 5px;
     }
-    .nav-1 .minha-pagina{
-        grid-area:botao-3;
+    .nav-1 .monitor{
+        grid-area:botao-2;
         padding:4px;
-        border:solid 1px black;
         background-color:white;
-        border-radius: 5px;
+        border:solid 1px black;
+        border-radius: 4px;
     }
     a{
         text-decoration: none;
@@ -89,7 +90,8 @@
         margin:5px 80px 5px 80px;
         background-color:white;
         display: grid;
-        grid-template-columns: repeat(2,1fr);
+        grid-template-columns: 1fr;
+        grid-gap: 24px;
         border:solid 1px black;
     }
     .pet{
@@ -97,6 +99,7 @@
         border:solid 1px black;
         padding:20px;
         background-color:lightgray;
+        font-size: 30px;
     }
     .footer{
         grid-area:rodape;
@@ -107,31 +110,30 @@
 <body>
     <div class="header">
             <img class="logo" src="{% static 'logo.png' %}" alt="My image">
-            <h1 class="user">Ola,{{monitor.nome}}</h1>
+            <h1 class="user">Ola,{{cliente.nome}}</h1>
             <h1 class="title">Hotel de cachorro</h1>
     </div>
     <div class="nav">
             <ul class="nav-1">
-                <li class='cadastro'><a href="/meu-cliente/{{cliente.id}}">Voltar ao cliente</a></li>
-                <li class='minha-pagina'><a href="/monitor/">Voltar aos meus clientes</a></li>
+                <li class='cadastro'><a href="/pet/register/">Cadastrar novo pet</a></li>
                 <li class='logout'><a href="/logout/">Encerrar sessão</a></li>
+                <li class='monitor'><a href="/">Retornar aos meus pets</a></li>
             </ul>
     </div>
     <div class="conteudo">
-        {%if pet%}
-            {%for x in pet %}
-            <div class="pet">
-                <h3>ID:{{x.id}}</h3>
-                <h3>Nome:{{x.nome_pet}}</h3>
-                <h3>Tipo:{{x.tipo}}</h3>
-                <h3>Data de entrada:{{x.data_entrada}}</h3>
-                <h3>Dono:{{x.dono}}</h3>
-            </div>
-            {%endfor%}
+        {%if cliente.monitor_escolhido%}
+        <div class="pet">
+            <h3>Nome:{{cliente.monitor_escolhido.nome}}</h3>
+            <h3>CPF:{{cliente.monitor_escolhido.CPF}}</h3>
+            <h3>E-mail:{{cliente.monitor_escolhido.email}}</h3>
+            <h3>Telefone:{{cliente.monitor_escolhido.tel}}</h3>
+
+            <button><a href='/monitor-escolhido/leave-monitor'>Desvincular</a></button>
         {%else%}
-            <h3>Este cliente não possui pets cadastrados</h3>
+            <h1>Nenhum monitor</h1>
         {%endif%}
-       </div>
+        </div>
+    </div>
     <div class="footer">
         <footer>
             <h2>Ciência da Computação - 2020</h2>

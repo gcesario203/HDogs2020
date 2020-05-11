@@ -133,6 +133,20 @@ def register_cliente(request):
             return render(request, 'registro-cliente.html', {'cliente':cliente})
     return render(request, 'registro-cliente.html')
 
+@login_required(login_url='/login/')
+def monitor_escolhido(request):
+    cliente = Cliente.objects.get(user = request.user)
+
+    return render(request, 'monitor-escolhido.html',{'cliente':cliente})
+
+@login_required(login_url='/login/')
+def leave_monitor(request):
+    cliente = Cliente.objects.get(user = request.user)
+    cliente.monitor_escolhido = None
+    cliente.save()
+
+    return redirect('/monitor-escolhido')
+
 def register_monitor(request):
     monitor_id = request.GET.get('id')
     if monitor_id:

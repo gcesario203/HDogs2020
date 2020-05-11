@@ -54,9 +54,10 @@
     .nav-1{
         display: grid;
         list-style: none;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-gap: 10px;
         grid-template-areas: 
-        'botao-1 botao-3';
+        'botao-1 botao-2 botao-3';
     }
     .nav-1 .cadastro{
         grid-area:botao-1;
@@ -71,6 +72,13 @@
         border:solid 1px black;
         background-color:tomato;
         border-radius: 5px;
+    }
+    .nav-1 .monitor{
+        grid-area:botao-2;
+        padding:4px;
+        background-color:white;
+        border:solid 1px black;
+        border-radius: 4px;
     }
     a{
         text-decoration: none;
@@ -113,6 +121,7 @@
             <ul class="nav-1">
                 <li class='cadastro'><a href="/pet/register/">Cadastrar novo pet</a></li>
                 <li class='logout'><a href="/logout/">Encerrar sessão</a></li>
+                <li class='monitor'><a href="/monitor-escolhido">Monitor Escolhido</a></li>
             </ul>
     </div>
     <div class="conteudo">
@@ -127,12 +136,13 @@
             {%else%}
                 <h3>Sem monitor designado para cuidar de seus pets</h3>
             {%endif%}
+            <div class="botoes">
+                <button class=""><a href="/">Retornar a lista</a></button>
+                <button class=""><a href="/novo-cliente/?id={{cliente.id}}">Alterar campos</a></button>
+                <button class=""><a href="/minha-pagina/delete/{{cliente.id}}">Excluir cadastro</button>
+            </div>
         </div>
-        <div class="botoes">
-            <button class=""><a href="/">Retornar a lista</a></button>
-            <button class=""><a href="/novo-cliente/?id={{cliente.id}}">Alterar campos</a></button>
-            <button class=""><a href="/minha-pagina/delete/{{cliente.id}}">Deletar</button>
-        </div>
+       
     </div>
     <div class="footer">
         <footer>

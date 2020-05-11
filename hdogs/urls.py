@@ -28,6 +28,8 @@ urlpatterns = [
     path('novo-cliente/', views.register_cliente),
     path('minha-pagina/<id>', views.pagina_cliente),
     path('minha-pagina/delete/<id>', views.cliente_delete),
+    path('monitor-escolhido', views.monitor_escolhido),
+    path('monitor-escolhido/leave-monitor', views.leave_monitor),
     path('novo-cliente/submit', views.set_cliente),
     path('logout/', views.logout_user),
     path('novo-monitor/', views.register_monitor),

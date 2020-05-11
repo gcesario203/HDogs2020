@@ -55,6 +55,7 @@
         display: grid;
         list-style: none;
         grid-template-columns: 1fr 1fr;
+        grid-gap: 10px;
         grid-template-areas: 
         'botao-1 botao-2';
     }
@@ -124,7 +125,7 @@
         </div>
         <div class="botoes">
             <button class=""><a href="/monitor/">Retornar a lista</a></button>
-            <button class=""><a href="/meu-cliente/{{cliente.id}}/pets/">Mostrar seus pets</a></button>
+            <button class=""><a href="/meu-cliente/{{cliente.id}}/pets/">Mostrar pets de {{cliente.nome}}</a></button>
         </div>
     </div>
     <div class="footer">
