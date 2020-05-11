@@ -54,9 +54,9 @@
     .nav-1{
         display: grid;
         list-style: none;
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
         grid-template-areas: 
-        'botao-1 botao-2 botao-3';
+        'botao-2 botao-1 botao-4 botao-3';
     }
     .nav-1 .cadastro{
         grid-area:botao-1;
@@ -74,6 +74,13 @@
     }
     .nav-1 .minha-pagina{
         grid-area:botao-2;
+        padding:4px;
+        background-color:white;
+        border:solid 1px black;
+        border-radius: 4px;
+    }
+    .nav-1 .novo-cliente{
+        grid-area:botao-4;
         padding:4px;
         background-color:white;
         border:solid 1px black;
@@ -120,6 +127,7 @@
             <ul class="nav-1">
                 <li class='cadastro'><a href="/todos-pets/">Todos os pets</a></li>
                 <li class='minha-pagina'><a href="/monitor/{{monitor.id}}">Minha pagina</a></li>
+                <li class='novo-cliente'><a href='/rel_cliente'>Clientes disponíveis</a></li>
                 <li class='logout'><a href="/logout/">Encerrar sessão</a></li>
             </ul>
     </div>
@@ -132,6 +140,7 @@
                 <h3>Telefone:{{clientes.tel}}</h3>
                 <div class="botoes">
                     <button class=""><a href="/meu-cliente/{{clientes.id}}">Detalhes</a></button>
+                    <button><a href="/monitor/leave_cliente/{{clientes.id}}">Abandonar</a></a></button>
                 </div>
             </div>
             {%endfor%}

@@ -141,6 +141,33 @@ def register_monitor(request):
             return render(request, 'registro-monitor.html',{'monitor':monitor})
     return render(request, 'registro-monitor.html')
 
+@login_required(login_url='/login/')
+def rel_cliente(request):
+    monitor = Monitor.objects.get(user = request.user)
+    cliente = Cliente.objects.filter(monitor_escolhido__isnull=True)
+
+    return render(request, 'rel-cliente.html',{'cliente':cliente,'monitor':monitor})
+
+@login_required(login_url='/login/')
+def select_cliente(request,id):
+    monitor = Monitor.objects.get(user = request.user)
+    cliente = Cliente.objects.get(id = id)
+
+    cliente.monitor_escolhido = monitor
+    cliente.save()
+
+    return redirect('/monitor/',{'cliente':cliente,'monitor':monitor})
+
+@login_required(login_url='/login/')
+def leave_cliente(request,id):
+    monitor = Monitor.objects.get(user = request.user)
+    cliente = Cliente.objects.get(id =id)
+
+    cliente.monitor_escolhido = None
+    cliente.save()
+
+    return redirect('/monitor/',{'cliente':cliente,'monitor':monitor})
+
 def set_monitor(request):
     username = request.POST.get('username')
     nome = request.POST.get('_nome')
