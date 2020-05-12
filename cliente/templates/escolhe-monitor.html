@@ -65,7 +65,7 @@
         border:solid 1px black;
         border-radius: 4px;
     }
-    .nav-1 .monitores{
+    .nav-1 .pets{
         grid-area:botao-4;
         padding:4px;
         background-color:white;
@@ -109,6 +109,13 @@
         grid-area:rodape;
         margin:12px 80px 5px 80px;
     }
+    .com-monitor{
+        padding:5px;
+        display: block;
+    }
+    .botoes{
+        padding:5px;
+    }
 
 </style>
 <body>
@@ -122,24 +129,32 @@
                 <li class='cadastro'><a href="/pet/register/">Cadastrar novo pet</a></li>
                 <li class='minha-pagina'><a href="/minha-pagina/{{cliente.id}}">Minha página</a></li>
                 <li class='logout'><a href="/logout/">Encerrar sessão</a></li>
-                <li class='monitores'><a href="/monitores-disponiveis/">Monitores disponíveis</a></li>
+                <li class='pets'><a href="/">Retornar aos meus pets</a></li>
             </ul>
     </div>
     <div class="conteudo">
-        {%if pet%}
-            {%for x in pet %}
-            <div class="pet">
-                <h3>ID:{{x.id}}</h3>
-                <h3>Nome:{{x.nome_pet}}</h3>
-                <h3>Tipo:{{x.tipo}}</h3>
-                <h3>Data de entrada:{{x.data_entrada}}</h3>
-                <button class="detalhes"><a href="pet/datalhe/{{x.id}}/">Detalhes</a></button>
-                <button class="detalhes"><a href="pet/register/?id={{x.id}}">Alterar</a></button>
-                <button class="logout"><a href="pet/delete/{{x.id}}/">Deletar</a></button>
+        {%if cliente.monitor_escolhido%}
+            <div class="com-monitor">
+                <h3>Você ja tem um monitor para cuidar do seu pet</h3>
+                <div class='botoes'>
+                    <button><a href='/monitor-escolhido'>Ver monitor</a></button>
+                    <button><a href='/monitor-escolhido/leave-monitor'>Desvincular</a></button>
+                </div>
             </div>
-            {%endfor%}
         {%else%}
-            <h1>Nenhum pet cadastrado</h1>
+            {%if monitor%}
+                {%for x in monitor %}
+                <div class="pet">
+                    <h3>ID:{{x.id}}</h3>
+                    <h3>Nome:{{x.nome}}</h3>
+                    <h3>Email:{{x.email}}</h3>
+                    <h3>Telefone:{{x.tel}}</h3>
+                    <button><a href='/monitores-disponiveis/{{x.id}}/select'>Escolher</a></button>
+                </div>
+                {%endfor%}
+            {%else%}
+                <h1>Nenhum nenhum monitor disponível</h1>
+            {%endif%}
         {%endif%}
        </div>
     <div class="footer">

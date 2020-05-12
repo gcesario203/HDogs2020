@@ -39,6 +39,8 @@ urlpatterns = [
     path('rel_cliente', views.rel_cliente),
     path('rel_cliente/<id>', views.select_cliente),
     path('monitor/leave_cliente/<id>', views.leave_cliente),
+    path('monitores-disponiveis/', views.link_monitor),
+    path('monitores-disponiveis/<id>/select',views.select_monitor),
     path('meu-cliente/<id>', views.detalhe_cliente),
     path('meu-cliente/<id>/pets/', views.tudo_pet),
     path('todos-pets/', views.hotel_pets),

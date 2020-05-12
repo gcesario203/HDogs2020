@@ -182,6 +182,16 @@ def leave_cliente(request,id):
 
     return redirect('/monitor/',{'cliente':cliente,'monitor':monitor})
 
+@login_required(login_url='/login/')
+def select_monitor(request,id):
+    cliente = Cliente.objects.get(user = request.user)
+    monitor = Monitor.objects.get(id=id)
+
+    cliente.monitor_escolhido = monitor
+    cliente.save()
+
+    return redirect('/monitor-escolhido',{'cliente':cliente,'monitor':monitor})
+
 def set_monitor(request):
     username = request.POST.get('username')
     nome = request.POST.get('_nome')
@@ -227,6 +237,12 @@ def monitor_page(request,id):
 
     return render(request,'monitor-pagina.html',{'cliente':cliente,'monitor':monitor})
 
+@login_required(login_url='/login/')
+def link_monitor(request):
+    cliente = Cliente.objects.get(user = request.user)
+    monitor = Monitor.objects.all()
+
+    return render(request, 'escolhe-monitor.html',{'cliente':cliente,'monitor':monitor})
 
 
 def set_cliente(request):

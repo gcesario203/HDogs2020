@@ -47,6 +47,17 @@ class Pessoa(models.Model):
     def tel(self,valor):
         self._tel = valor
 
+    def exibir_detalhes(self):
+        dic = {}
+
+        dic = {
+            "nome":self.nome,
+            "CPF":self.CPF,
+            "email":self.email,
+            "tel":self.tel
+        }
+        return dic
+
 
 class Administrador(Pessoa):
     _CTPS = models.CharField(max_length=25,blank=False,null=False)
@@ -68,6 +79,17 @@ class Administrador(Pessoa):
     def CTPS(self,valor):
         self._CTPS = valor
 
+    def exibir_detalhes(self):
+        dic = {}
+
+        dic = {
+            "nome":self.nome,
+            "CTPS":self.CTPS,
+            "email":self.email,
+            "tel":self.tel
+        }
+        return dic
+
 
 class Monitor(Pessoa):
     administrador = models.ForeignKey(Administrador, verbose_name="Administradores",on_delete=models.CASCADE, null=True,blank=True)
@@ -87,6 +109,17 @@ class Monitor(Pessoa):
     @CTPS.setter
     def CTPS(self,valor):
         self._CTPS = valor
+
+    def exibir_detalhes(self):
+        dic = {}
+
+        dic = {
+            "nome":self.nome,
+            "CTPS":self.CTPS,
+            "email":self.email,
+            "tel":self.tel
+        }
+        return dic
 
 
 class Cliente(Pessoa):
