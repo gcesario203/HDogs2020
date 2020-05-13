@@ -156,7 +156,7 @@ class Pet(models.Model):
         verbose_name_plural = 'mascotes'
 
     def __str__(self):
-        return self._nome_pet+ " - Dono:"+self._dono._nome
+        return self.nome_pet+ " - Tipo: "+self.tipo+" - Espécie: "+self.especie
 
     @property
     def nome_pet(self):

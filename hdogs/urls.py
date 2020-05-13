@@ -36,6 +36,7 @@ urlpatterns = [
     path('novo-monitor/submit', views.set_monitor),
     path('monitor/', views.monitor),
     path('monitor/<id>', views.monitor_page),
+    path('monitor/delete/<id>', views.monitor_delete),
     path('rel_cliente', views.rel_cliente),
     path('rel_cliente/<id>', views.select_cliente),
     path('monitor/leave_cliente/<id>', views.leave_cliente),

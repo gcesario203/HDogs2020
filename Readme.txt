@@ -5,4 +5,4 @@ Gabriel Palheiro dos Santos
 Pedro Trinca
 Marcos Bastos Garcia
 
-OBS: CRUD de Cliente completamente(manipulando completamente o CRUD de pet) e CRUD de monitor(o monitor tem acesso para consulta as informações do cliente atrelado a ele e de todos os pets do banco de dados)
+OBS: CRUD de Cliente e Monitor feitos com funcionalidades de vincular e desvincularem-se um com outro, ou seja, um monitor pode ter varios clientes e um cliente pode ter um monitor escolhido

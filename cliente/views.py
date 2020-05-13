@@ -86,6 +86,21 @@ def cliente_delete(request,id):
     return redirect('/login/')
 
 @login_required(login_url='/login/')
+def monitor_delete(request,id):
+    monitor = Monitor.objects.get(user = request.user, id=id)
+    cliente = Cliente.objects.filter(monitor_escolhido = monitor)
+    user = request.user
+    
+    if cliente:
+        for x in cliente:
+            x.monitor_escolhido = None
+            x.save()
+
+    monitor.delete()
+    user.delete()
+    return redirect('/login/')
+
+@login_required(login_url='/login/')
 def monitor(request):
     monitor = Monitor.objects.get(user = request.user)
     cliente = Cliente.objects.filter(monitor_escolhido = monitor)
