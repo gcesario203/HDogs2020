@@ -90,6 +90,9 @@
         grid-area:rodape;
         margin:12px 80px 5px 80px;
     }
+    .campo{
+        padding-left: 10px;
+    }
 
 </style>
 <body>
@@ -134,9 +137,9 @@
                 </div>
                 <div class="campo">
                     <label for="PEQUENO">Pequeno</label>
-                    <input type="radio" name="_porte" value=1>
+                    <input type="radio" name="_porte" value=1><br/>
                     <label for="MEDIO">Medio</label>
-                    <input type="radio" name="_porte" value=2>
+                    <input type="radio" name="_porte" value=2><br/>
                     <label for="Grande">Grande</label>
                     <input type="radio" name="_porte" value=3>
                 </div>
@@ -146,7 +149,7 @@
                 </div>
                 <div class="campo">
                     <label for="_servicos">Serviços</label>
-                    <textarea rows="5" name="_servicos"></textarea>
+                    <textarea rows="1" name="_servicos"></textarea>
                 </div>
                 <button class="cadastro" type="submit">
                     {%if pet%}
