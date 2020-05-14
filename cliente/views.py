@@ -7,14 +7,135 @@ from .models import *
 from django.contrib.auth.models import User
 
 
+#Views relacionadas ao login e as autorizações
+def login_user(request):#View que renderiza a tela de login
+    return render(request, 'login.html')
+
+def logout_user(request):#Redirecionamento para desautenticar o usuário atual
+    logout(request)
+    return redirect('/login/')
+
+
+@csrf_protect
+def submit_login(request):#Metodo de autenticação com lógica para checar se o usuário é um cliente,monitor ou superuser
+    if request.POST:
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        tipo = request.POST.get('tipos')
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            if request.user.is_superuser:
+                return redirect('/admin/')
+            else:
+                if hasattr(user,'cliente'):
+                    return redirect('/')
+                elif hasattr(user,'monitor'):
+                    return redirect('/monitor/')
+        else:
+            messages.error(request, 'Campos não existentes ou incorretos')
+    return redirect('/login/')
+
+#Views relacionadas ao CRUD do cliente
 @login_required(login_url='/login/')
-def index(request):
+def index(request):#View retornado caso o login seja um cliente com uma lista dos pets cadastrado pelo cliente
     cliente = Cliente.objects.get(user = request.user)
     pet = Pet.objects.filter(dono = cliente)
     return render(request, 'index.html',{'cliente':cliente,'pet':pet})
 
 @login_required(login_url='/login/')
-def register_pet(request):
+def pagina_cliente(request, id):#Tela renderizada para perfil do cliente, retornando do db(data base) as informações do cliente requerido pelo id e seus pets
+    cliente = Cliente.objects.get(user = request.user, id=id)
+    pet = Pet.objects.filter(dono = cliente)
+    return render(request, 'cliente.html',{'pet':pet,'cliente':cliente})
+
+@login_required(login_url='/login/')
+def cliente_delete(request,id):#Metodo de deleção de cliente junto com o usuário criado para o mesmo
+    cliente = Cliente.objects.get(user = request.user,id=id)
+    user = request.user
+    cliente.delete()
+    user.delete()
+
+    return redirect('/login/')
+
+def register_cliente(request):#Metodo usado para a tela alteração ou criação de um cliente(alteração ocorre caso o cliente esteja autenticado)
+    cliente_id = request.GET.get('id')
+    if cliente_id:
+        cliente = Cliente.objects.get(id = cliente_id)
+        if cliente.user == request.user:
+            return render(request, 'registro-cliente.html', {'cliente':cliente})
+    return render(request, 'registro-cliente.html')
+
+@login_required(login_url='/login/')
+def leave_monitor(request):#Metodo de desvinculamento do monitor escolhido
+    cliente = Cliente.objects.get(user = request.user)
+    cliente.monitor_escolhido = None
+    cliente.save()
+
+    return redirect('/monitor-escolhido')
+
+@login_required(login_url='/login/')
+def monitor_escolhido(request):#Dados do monitor escolhido do cliente(enfase no contato)
+    cliente = Cliente.objects.get(user = request.user)
+
+    return render(request, 'monitor-escolhido.html',{'cliente':cliente})
+
+@login_required(login_url='/login/')
+def select_monitor(request,id):#Metodo de escolha de monitor caso o cliente não tenha um selecionado
+    cliente = Cliente.objects.get(user = request.user)
+    monitor = Monitor.objects.get(id=id)
+
+    cliente.monitor_escolhido = monitor
+    cliente.save()
+
+    return redirect('/monitor-escolhido',{'cliente':cliente,'monitor':monitor})
+
+@login_required(login_url='/login/')
+def link_monitor(request):#Metodo para renderizar todos os monitores disponíveis(cadastrados no banco de dados)
+    cliente = Cliente.objects.get(user = request.user)
+    monitor = Monitor.objects.all()
+
+    return render(request, 'escolhe-monitor.html',{'cliente':cliente,'monitor':monitor})
+
+def set_cliente(request):#Metodo onde as informações do front(template) de alteração(caso cliente autenticado) ou criação de cliente são aplicadas 
+    username = request.POST.get('username')
+    nome = request.POST.get('_nome')
+    cpf = request.POST.get('_CPF')
+    cliente_id = request.POST.get('cliente-id')
+    email = request.POST.get('_email')
+    tel = request.POST.get('_tel')
+
+    if cliente_id:
+        cliente = Cliente.objects.get(id = cliente_id)
+        if request.user == cliente.user:
+            cliente.email = email
+            cliente.nome = nome
+            cliente.CPF = cpf
+            cliente.user.username = username
+            if request.POST.get('password') == request.POST.get('Cpassword'):
+                password = request.POST.get('password')
+                cliente.user.set_password(password)
+                cliente.user.save()
+                cliente.save()
+                return redirect('/')
+            else:
+                messages.error(request, 'Senhas não se coincidem')
+        return redirect('/')
+    else:
+        if request.POST.get('password') == request.POST.get('Cpassword'):
+            password = request.POST.get('password')
+            user = User.objects.create(username=username,password=password,email=email)
+            user.set_password(password)
+            user.save()
+            cliente = Cliente.objects.create(_CPF=cpf,_nome=nome,_email=email,_tel=tel,user=user)
+            return redirect('/login/')
+        else:
+            messages.error(request, 'Senhas não se coincidem')
+        return redirect('/novo-cliente/')
+
+#Views relacionadas aos Pets
+@login_required(login_url='/login/')
+def register_pet(request):#Metodo para tela de alteração ou de criação de pets do cliente
     pet_id = request.GET.get('id')
 
     if pet_id:
@@ -26,7 +147,7 @@ def register_pet(request):
         return render(request, 'registro-pet.html',{'cliente':cliente})
 
 @login_required(login_url='/login/')
-def set_pet(request):
+def set_pet(request):#Aplicação dos valores passados no front de alteração ou criação de pet 
     cliente = Cliente.objects.get(user = request.user)
     nome = request.POST.get('_nome_pet')
     tipo = request.POST.get('_tipo')
@@ -56,7 +177,7 @@ def set_pet(request):
         return redirect(url)
 
 @login_required(login_url='/login/')
-def pet_delete(request,id):
+def pet_delete(request,id):#Metodo de deleção de pet de acordo com id
     cliente = Cliente.objects.get(user = request.user)
     pet = Pet.objects.get(dono = cliente, id=id)
     pet.delete()
@@ -65,28 +186,21 @@ def pet_delete(request,id):
 
 
 @login_required(login_url='/login/')
-def pet_detalhe(request,id):
+def pet_detalhe(request,id):#Renderização de detalhes do pet selecionado pelo id
     cliente = Cliente.objects.get(user = request.user)
     pet = Pet.objects.get(dono = cliente, id =id)
     return render(request, 'pet.html',{'pet':pet,'cliente':cliente})
 
+#views relacionadas ao CRUD de monitor
 @login_required(login_url='/login/')
-def pagina_cliente(request, id):
-    cliente = Cliente.objects.get(user = request.user, id=id)
-    pet = Pet.objects.filter(dono = cliente)
-    return render(request, 'cliente.html',{'pet':pet,'cliente':cliente})
+def monitor_page(request,id):#Página de perfil do monitor podendo alterar e deletar infos pessoais
+    monitor = Monitor.objects.get(user = request.user, id=id)
+    cliente = Cliente.objects.filter(monitor_escolhido = monitor)
+
+    return render(request,'monitor-pagina.html',{'cliente':cliente,'monitor':monitor})
 
 @login_required(login_url='/login/')
-def cliente_delete(request,id):
-    cliente = Cliente.objects.get(user = request.user,id=id)
-    user = request.user
-    cliente.delete()
-    user.delete()
-
-    return redirect('/login/')
-
-@login_required(login_url='/login/')
-def monitor_delete(request,id):
+def monitor_delete(request,id):#Metodo de deleção de monitor, evitando a deleção do cliente(gambiarra)
     monitor = Monitor.objects.get(user = request.user, id=id)
     cliente = Cliente.objects.filter(monitor_escolhido = monitor)
     user = request.user
@@ -101,7 +215,7 @@ def monitor_delete(request,id):
     return redirect('/login/')
 
 @login_required(login_url='/login/')
-def monitor(request):
+def monitor(request):#Metodo para renderizar o login do tipo monitor mostrando a lista dos clientes atrelados ao monitor
     monitor = Monitor.objects.get(user = request.user)
     cliente = Cliente.objects.filter(monitor_escolhido = monitor)
     pet = Pet.objects.filter(dono = cliente)
@@ -109,7 +223,7 @@ def monitor(request):
     return render(request, 'monitor.html',{'cliente':cliente,'monitor':monitor,'pet':pet})
 
 @login_required(login_url='/login/')
-def detalhe_cliente(request,id):
+def detalhe_cliente(request,id):#Metodo de descrição do cliente selecionado e a quantidade de pets que o mesmo tem
     monitor = Monitor.objects.get(user = request.user)
     cliente = Cliente.objects.get(monitor_escolhido= monitor,id=id)
     pet = Pet.objects.filter(dono = cliente)
@@ -117,7 +231,7 @@ def detalhe_cliente(request,id):
     return render(request, 'meu-cliente.html',{'cliente':cliente,'pet':pet,'monitor':monitor})
 
 @login_required(login_url='/login/')
-def tudo_pet(request,id):
+def tudo_pet(request,id):#Mostra uma lista de pets do cliente selecionado
     monitor = Monitor.objects.get(user = request.user)
     cliente = Cliente.objects.get(monitor_escolhido = monitor, id=id)
     pet = Pet.objects.filter(dono = cliente)
@@ -125,44 +239,14 @@ def tudo_pet(request,id):
     return render(request, 'cliente-pets.html',{'cliente':cliente,'pet':pet,'monitor':monitor})
 
 @login_required(login_url='/login/')
-def hotel_pets(request):
+def hotel_pets(request):#Mostra todos os pets cadastrados no db, nome do dono e o monitor selecionado(sim, pode ser um que não esteja autenticado)
     monitor = Monitor.objects.get(user = request.user)
     cliente = Cliente.objects.all()
     pet = Pet.objects.all()
 
     return render(request, 'todos-pets.html',{'pet':pet,'monitor':monitor,'cliente':cliente})
 
-def logout_user(request):
-    logout(request)
-    return redirect('/login/')
-
-
-def login_user(request):
-    return render(request, 'login.html')
-
-def register_cliente(request):
-    cliente_id = request.GET.get('id')
-    if cliente_id:
-        cliente = Cliente.objects.get(id = cliente_id)
-        if cliente.user == request.user:
-            return render(request, 'registro-cliente.html', {'cliente':cliente})
-    return render(request, 'registro-cliente.html')
-
-@login_required(login_url='/login/')
-def monitor_escolhido(request):
-    cliente = Cliente.objects.get(user = request.user)
-
-    return render(request, 'monitor-escolhido.html',{'cliente':cliente})
-
-@login_required(login_url='/login/')
-def leave_monitor(request):
-    cliente = Cliente.objects.get(user = request.user)
-    cliente.monitor_escolhido = None
-    cliente.save()
-
-    return redirect('/monitor-escolhido')
-
-def register_monitor(request):
+def register_monitor(request):#Pagina de alteração e criação do monitor
     monitor_id = request.GET.get('id')
     if monitor_id:
         monitor = Monitor.objects.get(id = monitor_id)
@@ -171,14 +255,14 @@ def register_monitor(request):
     return render(request, 'registro-monitor.html')
 
 @login_required(login_url='/login/')
-def rel_cliente(request):
+def rel_cliente(request):#Metodo para lista de clientes disponíveis no db(clientes disponiveis = sem monitor)
     monitor = Monitor.objects.get(user = request.user)
     cliente = Cliente.objects.filter(monitor_escolhido__isnull=True)
 
     return render(request, 'rel-cliente.html',{'cliente':cliente,'monitor':monitor})
 
 @login_required(login_url='/login/')
-def select_cliente(request,id):
+def select_cliente(request,id):#Metodo para atrelar o cliente a sua lista de clientes
     monitor = Monitor.objects.get(user = request.user)
     cliente = Cliente.objects.get(id = id)
 
@@ -188,7 +272,7 @@ def select_cliente(request,id):
     return redirect('/monitor/',{'cliente':cliente,'monitor':monitor})
 
 @login_required(login_url='/login/')
-def leave_cliente(request,id):
+def leave_cliente(request,id):#Metodo para desvincular cliente da lista
     monitor = Monitor.objects.get(user = request.user)
     cliente = Cliente.objects.get(id =id)
 
@@ -197,17 +281,7 @@ def leave_cliente(request,id):
 
     return redirect('/monitor/',{'cliente':cliente,'monitor':monitor})
 
-@login_required(login_url='/login/')
-def select_monitor(request,id):
-    cliente = Cliente.objects.get(user = request.user)
-    monitor = Monitor.objects.get(id=id)
-
-    cliente.monitor_escolhido = monitor
-    cliente.save()
-
-    return redirect('/monitor-escolhido',{'cliente':cliente,'monitor':monitor})
-
-def set_monitor(request):
+def set_monitor(request):#Metodo em que os dados do front são passados ao db em caso de alteração ou criação de monitor
     username = request.POST.get('username')
     nome = request.POST.get('_nome')
     cpf = request.POST.get('_CPF')
@@ -244,77 +318,3 @@ def set_monitor(request):
         else:
             messages.error(request, 'Senhas não se coincidem')
         return redirect('/novo-monitor/')
-
-@login_required(login_url='/login/')
-def monitor_page(request,id):
-    monitor = Monitor.objects.get(user = request.user, id=id)
-    cliente = Cliente.objects.filter(monitor_escolhido = monitor)
-
-    return render(request,'monitor-pagina.html',{'cliente':cliente,'monitor':monitor})
-
-@login_required(login_url='/login/')
-def link_monitor(request):
-    cliente = Cliente.objects.get(user = request.user)
-    monitor = Monitor.objects.all()
-
-    return render(request, 'escolhe-monitor.html',{'cliente':cliente,'monitor':monitor})
-
-
-def set_cliente(request):
-    username = request.POST.get('username')
-    nome = request.POST.get('_nome')
-    cpf = request.POST.get('_CPF')
-    cliente_id = request.POST.get('cliente-id')
-    email = request.POST.get('_email')
-    tel = request.POST.get('_tel')
-
-    if cliente_id:
-        cliente = Cliente.objects.get(id = cliente_id)
-        if request.user == cliente.user:
-            cliente.email = email
-            cliente.nome = nome
-            cliente.CPF = cpf
-            cliente.user.username = username
-            if request.POST.get('password') == request.POST.get('Cpassword'):
-                password = request.POST.get('password')
-                cliente.user.set_password(password)
-                cliente.user.save()
-                cliente.save()
-                return redirect('/')
-            else:
-                messages.error(request, 'Senhas não se coincidem')
-        return redirect('/')
-    else:
-        if request.POST.get('password') == request.POST.get('Cpassword'):
-            password = request.POST.get('password')
-            user = User.objects.create(username=username,password=password,email=email)
-            user.set_password(password)
-            user.save()
-            cliente = Cliente.objects.create(_CPF=cpf,_nome=nome,_email=email,_tel=tel,user=user)
-            return redirect('/login/')
-        else:
-            messages.error(request, 'Senhas não se coincidem')
-        return redirect('/novo-cliente/')
-
-
-@csrf_protect
-def submit_login(request):
-    if request.POST:
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        tipo = request.POST.get('tipos')
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            login(request, user)
-            print(type(user))
-            print(type(request.user))
-            if request.user.is_superuser:
-                return redirect('/admin/')
-            else:
-                if hasattr(user,'cliente'):
-                    return redirect('/')
-                elif hasattr(user,'monitor'):
-                    return redirect('/monitor/')
-        else:
-            messages.error(request, 'Campos não existentes ou incorretos')
-    return redirect('/login/')
