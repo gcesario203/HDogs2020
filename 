@@ -1,0 +1,22 @@
+[33m6564f6e[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m Criação da classe de serviços no models.py e habilitando criação de serviço pelo CRUD de Monitor
+[33m94f29e3[m[33m ([m[1;31morigin/master[m[33m)[m Organizando e comentando a view da app
+[33m5649438[m Adicionando modais para deleção de itens
+[33m5b869ca[m Mudança de readme
+[33m58c80d7[m Adicionando deleção de monitores sem afetar os clientes cadastrados
+[33maf21710[m Adicionando mecânica de adição e desvinculação de monitor no CRUD cliente
+[33m6a28ba7[m Adicionando funcionalidade de visualização de monitor escolhido
+[33m3e26b45[m Adicionando funcionalidade de adição e remoção de clientes no CRUD de monitor
+[33m6f473e7[m Melhorando lógica da view de envio de formulario de login e seus redirecionamentos
+[33me3060a5[m Finalizando CRUD de monitor e adicionando frases caso não haja clientes e nem pets
+[33m9ef6599[m Desenvolvendo CRUD do Monitor
+[33m9b3be04[m CRUD de cliente e pets completo com junto com alteração de usuario e senha dos clientes
+[33meb2b7c8[m Adicionando confirmação de senha no cadastro do usuario
+[33mb55f046[m Alteração de readme
+[33mf3db7bc[m CRUD de Cliente e funcionarios quase completo
+[33m2d0e4e1[m Modificação das migrations e do método setter de Pet._dono
+[33m16e42c8[m Aplicação de métodos de encapsulamento
+[33m36c4424[m API, frontend de página de login e rotas para o mesmo
+[33m4522120[m Pequena gambiarra para redirecionamento de tipo de usuario
+[33m1ef6087[m Tela de login e logout de usuario
+[33m9b3b0a3[m Criacao de superuser e inicializacao de banco de dados
+[33mfcab86e[m Inicio do projeto c django instalado
