@@ -44,6 +44,8 @@ urlpatterns = [
     path('monitores-disponiveis/<id>/select',views.select_monitor),
     path('meu-cliente/<id>', views.detalhe_cliente),
     path('meu-cliente/<id>/pets/', views.tudo_pet),
+    path('cadastrar-servico/',views.cadastrar_servico),
+    path('cadastrar-servico/submit',views.post_servico),
     path('todos-pets/', views.hotel_pets),
     path('', views.index),
 

@@ -149,7 +149,6 @@ class Pet(models.Model):
     _racao = models.CharField("Ração",max_length=30,blank=False, null=False)
     data_entrada = models.DateField(verbose_name="Data de entrada",auto_now_add=True)
     dono = models.ForeignKey(Cliente, verbose_name="Dono",on_delete=models.CASCADE,blank=False)
-    _servicos = models.TextField("Serviços",max_length=400,blank=True)
 
     class Meta:
         verbose_name = 'mascote'
@@ -210,10 +209,32 @@ class Pet(models.Model):
     def racao(self,valor):
         self._racao = valor
 
+class Servicos(models.Model):
+    _nome=models.CharField("Nome do serviço",max_length=300,blank=False,null=False,default="Nome do serviço prestado")
+    _detalhes=models.TextField("Detalhes", max_length=1000,blank=False,null=False,default="Serviço prestado")
+    data_criacao= models.DateField("Data de criação",auto_now_add=True)
+    pet = models.ForeignKey(Pet,verbose_name="Pet que recebeu",on_delete=models.CASCADE, null=False,blank=False)
+    monitor = models.ForeignKey(Monitor,verbose_name="Monitor que aplicou",on_delete=models.CASCADE, null=False,blank=False)
+
+    class Meta:
+        verbose_name = 'serviço'
+        verbose_name_plural = 'serviços'
+
+    def __str__(self):
+        return self.nome + " de "+self.pet.nome_pet
+
     @property
-    def servicos(self):
-        return self._servicos
+    def nome(self):
+        return self._nome
+
+    @nome.setter
+    def nome(self,valor):
+        self._nome = valor
+
+    @property
+    def detalhes(self):
+        return self._detalhes
     
-    @servicos.setter
-    def servicos(self,valor):
-        self._servicos = valor
+    @detalhes.setter
+    def detalhes(self,valor):
+        self._detalhes = valor

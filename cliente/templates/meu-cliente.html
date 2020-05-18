@@ -49,25 +49,18 @@
     }
     .nav{
         grid-area:navegacao;
-        margin:0px 900px 5px 80px;
+        margin:0px 500px 5px 80px;
     }
     .nav-1{
         display: grid;
         list-style: none;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
         grid-gap: 10px;
         grid-template-areas: 
-        'botao-1 botao-2';
-    }
-    .nav-1 .cadastro{
-        grid-area:botao-1;
-        padding:4px;
-        background-color:white;
-        border:solid 1px black;
-        border-radius: 4px;
+        'botao-2';
     }
     .nav-1 .logout{
-        grid-area:botao-1;
+        grid-area:botao-2;
         padding:4px;
         border:solid 1px black;
         background-color:tomato;
@@ -112,6 +105,7 @@
     </div>
     <div class="nav">
             <ul class="nav-1">
+
                 <li class='logout'><a href="/logout/">Encerrar sessão</a></li>
             </ul>
     </div>
@@ -126,6 +120,9 @@
         <div class="botoes">
             <button class=""><a href="/monitor/">Retornar a lista</a></button>
             <button class=""><a href="/meu-cliente/{{cliente.id}}/pets/">Mostrar pets de {{cliente.nome}}</a></button>
+            {%if pet%}
+                <button class=''><a href="/cadastrar-servico/?id={{cliente.id}}">Cadastrar serviço</a></button>
+            {%endif%}
         </div>
     </div>
     <div class="footer">

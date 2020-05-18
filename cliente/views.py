@@ -155,7 +155,6 @@ def set_pet(request):#Aplicação dos valores passados no front de alteração o
     especie = request.POST.get('_especie')
     porte = request.POST.get('_porte')
     racao = request.POST.get('_racao')
-    servicos = request.POST.get('_servicos')
     dono = cliente
 
     if pet_id:
@@ -165,13 +164,12 @@ def set_pet(request):#Aplicação dos valores passados no front de alteração o
         pet._especie = especie
         pet._porte = porte
         pet._racao = racao
-        pet._servicos = servicos
 
         pet.save()
 
         return redirect('/pet/datalhe/{}/'.format(pet.id))
     else:
-        pet = Pet.objects.create(_nome_pet=nome,_tipo=tipo,_porte=porte,_especie=especie,_racao=racao,dono=dono,_servicos=servicos)
+        pet = Pet.objects.create(_nome_pet=nome,_tipo=tipo,_porte=porte,_especie=especie,_racao=racao,dono=dono)
         url = '/pet/datalhe/{}/'.format(pet.id)
 
         return redirect(url)
@@ -318,3 +316,28 @@ def set_monitor(request):#Metodo em que os dados do front são passados ao db em
         else:
             messages.error(request, 'Senhas não se coincidem')
         return redirect('/novo-monitor/')
+
+
+@login_required(login_url='/login/')
+def cadastrar_servico(request):
+    cliente_id = request.GET.get('id')
+    if cliente_id:
+        monitor = Monitor.objects.get(user = request.user)
+        cliente = Cliente.objects.get(monitor_escolhido= monitor, id=cliente_id)
+        pet = Pet.objects.filter(dono = cliente)
+
+        return render(request, 'cadastro-servico.html',{'monitor':monitor,'cliente':cliente,'pet':pet})
+    else:
+        return redirect('/monitor/')
+
+@login_required(login_url='/login/')
+def post_servico(request):
+    pet_id = request.POST.get('pet')
+    nome = request.POST.get('nome')
+    detalhes = request.POST.get('detalhes')
+    monitor = Monitor.objects.get(user = request.user)
+    pet = Pet.objects.get(id=pet_id)
+
+
+    servico = Servicos.objects.create(_nome=nome,_detalhes=detalhes,pet=pet,monitor=monitor)
+    return redirect('/logout/')

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Pet,Administrador,Cliente,Monitor
+from .models import Pet,Administrador,Cliente,Monitor,Servicos
 
 
 class ListaPet(admin.ModelAdmin):
@@ -13,8 +13,12 @@ class ListaCliente(admin.ModelAdmin):
 class ListaAdm(admin.ModelAdmin):
     list_display = ['_nome' , '_CTPS']
 
+class ListaServicos(admin.ModelAdmin):
+    list_display = ['nome','pet','monitor']
+
 admin.site.register(Pet,ListaPet)
 admin.site.register(Administrador,ListaAdm)
 admin.site.register(Cliente,ListaCliente)
 admin.site.register(Monitor,ListaAdm)
+admin.site.register(Servicos,ListaServicos)
 # Register your models here.
