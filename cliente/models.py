@@ -212,9 +212,9 @@ class Pet(models.Model):
 class Servicos(models.Model):
     _nome=models.CharField("Nome do serviço",max_length=300,blank=False,null=False,default="Nome do serviço prestado")
     _detalhes=models.TextField("Detalhes", max_length=1000,blank=False,null=False,default="Serviço prestado")
-    data_criacao= models.DateField("Data de criação",auto_now_add=True)
     pet = models.ForeignKey(Pet,verbose_name="Pet que recebeu",on_delete=models.CASCADE, null=False,blank=False)
     monitor = models.ForeignKey(Monitor,verbose_name="Monitor que aplicou",on_delete=models.CASCADE, null=False,blank=False)
+    data = models.DateTimeField(verbose_name="Data de ocorrência",auto_now_add=True)
 
     class Meta:
         verbose_name = 'serviço'

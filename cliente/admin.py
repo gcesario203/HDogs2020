@@ -14,7 +14,7 @@ class ListaAdm(admin.ModelAdmin):
     list_display = ['_nome' , '_CTPS']
 
 class ListaServicos(admin.ModelAdmin):
-    list_display = ['nome','pet','monitor']
+    list_display = ['nome','pet','monitor','data']
 
 admin.site.register(Pet,ListaPet)
 admin.site.register(Administrador,ListaAdm)
