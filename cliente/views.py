@@ -42,6 +42,7 @@ def submit_login(request):#Metodo de autenticação com lógica para checar se o
 def index(request):#View retornado caso o login seja um cliente com uma lista dos pets cadastrado pelo cliente
     cliente = Cliente.objects.get(user = request.user)
     pet = Pet.objects.filter(dono = cliente)
+
     return render(request, 'index.html',{'cliente':cliente,'pet':pet})
 
 @login_required(login_url='/login/')
@@ -188,7 +189,9 @@ def pet_delete(request,id):#Metodo de deleção de pet de acordo com id
 def pet_detalhe(request,id):#Renderização de detalhes do pet selecionado pelo id
     cliente = Cliente.objects.get(user = request.user)
     pet = Pet.objects.get(dono = cliente, id =id)
-    return render(request, 'pet.html',{'pet':pet,'cliente':cliente})
+    servicos = Servicos.objects.filter(pet=pet)
+
+    return render(request, 'pet.html',{'pet':pet,'cliente':cliente,'servicos':servicos})
 
 #views relacionadas ao CRUD de monitor
 @login_required(login_url='/login/')
@@ -396,3 +399,11 @@ def delete_servico(request,id):
     servico.delete()
 
     return redirect('/monitor/servicos/{}'.format(monitor.id))
+
+@login_required(login_url='/login/')
+def get_servicos(request,id):
+    cliente = Cliente.objects.get(user = request.user)
+    pet = Pet.objects.get(dono = cliente, id=id)
+    servicos = Servicos.objects.filter(pet=pet)
+
+    return render(request, 'servicos-cadastrados.html',{'cliente':cliente,'pet':pet,'servicos':servicos})

@@ -49,15 +49,15 @@
     }
     .nav{
         grid-area:navegacao;
-        margin:0px 500px 5px 80px;
+        margin:0px 300px 5px 80px;
     }
     .nav-1{
         display: grid;
         list-style: none;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr ;
         grid-gap: 10px;
         grid-template-areas: 
-        'botao-1 botao-2';
+        'botao-2 botao-1 botao-3';
     }
     .nav-1 .cadastro{
         grid-area:botao-1;
@@ -67,11 +67,39 @@
         border-radius: 4px;
     }
     .nav-1 .logout{
-        grid-area:botao-2;
+        grid-area:botao-3;
         padding:4px;
         border:solid 1px black;
         background-color:tomato;
         border-radius: 5px;
+    }
+    .nav-1 .minha-pagina{
+        grid-area:botao-2;
+        padding:4px;
+        background-color:white;
+        border:solid 1px black;
+        border-radius: 4px;
+    }
+    .nav-1 .meus-servicos{
+        grid-area:botao-6;
+        padding:4px;
+        background-color:white;
+        border:solid 1px black;
+        border-radius: 4px;
+    }
+    .nav-1 .novo-cliente{
+        grid-area:botao-4;
+        padding:4px;
+        background-color:white;
+        border:solid 1px black;
+        border-radius: 4px;
+    }
+    .nav-1 .novo-servico{
+        grid-area:botao-5;
+        padding:4px;
+        background-color:white;
+        border:solid 1px black;
+        border-radius: 4px;
     }
     a{
         text-decoration: none;
@@ -83,8 +111,7 @@
         margin:5px 80px 5px 80px;
         background-color:white;
         display: grid;
-        grid-template-columns: 1fr;
-        grid-gap: 24px;
+        grid-template-columns:1fr;
         border:solid 1px black;
     }
     .pet{
@@ -145,6 +172,35 @@
             font-size:18px;
         }
 
+        .tabela{
+            margin:10px 200px;
+        }
+
+        .tabela tr,td,th{
+            border:solid 1px black;
+            border-collapse: collapse;
+            padding:10px;
+        }
+
+        .tabela th{
+            background-color:tomato;
+            border-radius: 5px;
+        }
+        .tabela td{
+            text-align: center;
+        }
+
+        .tabela .botao{
+            border-radius: 20px;
+            background-color:tomato;
+            opacity: 0.3;
+            transition: 0.3s;
+        }
+        .tabela .botao:hover{
+            opacity: 1;
+           
+        }
+
 </style>
 <body>
     <div class="header">
@@ -154,33 +210,33 @@
     </div>
     <div class="nav">
             <ul class="nav-1">
-                <li class='cadastro'><a href="/pet/register/">Cadastrar novo pet</a></li>
+                <li class='cadastro'><a href="/">Meus pets</a></li>
+                <li class='minha-pagina'><a href="/minha-pagina/{{cliente.id}}">Minha pagina</a></li>
                 <li class='logout'><a href="/logout/">Encerrar sessão</a></li>
             </ul>
     </div>
     <div class="conteudo">
-        <div class="pet">
-            <h3>Nome:{{pet.nome_pet}}</h3>
-            <h3>Tipo:{{pet.tipo}}</h3>
-            <h3>Espécie:{{pet.especie}}</h3>
-            <h3>Ração:{{pet.racao}}</h3>
-            <h3>Data de entrada:{{pet.data_entrada}}</h3>
-        </div>
-        <div class="botoes">
-            <button class=""><a href="/">Retornar a lista</a></button>
-            <button class=""><a href="/pet/register/?id={{pet.id}}">Alterar campos</a></button>
             {%if servicos%}
-            <button class=""><a href="/pet/datalhe/{{pet.id}}/servicos">Serviços</a></button>
+            <table class='tabela'>
+                <h1 align="center">Serviços cadastrados para {{pet.nome_pet}}</h1>
+                <tr>
+                    <th>Serviço</th>
+                    <th>Detalhes</th>
+                    <th>Monitor</th>
+                    <th>Data e hora de criação</th>
+                </tr>
+                {%for servico in servicos%}
+                <tr>
+                    <td>{{servico.nome}}</td>
+                    <td>{{servico.detalhes}}</td>
+                    <td>{{servico.monitor.nome}}</td>
+                    <td>{{servico.data}}</td>
+                </tr>
+                {%endfor%}
+            </table>
+            {%else%}
+                <h1>Você não possui nenhum servicos cadastrado</h1>
             {%endif%}
-            <button id="myBtn">Excluir</button>
-            <div id="myModal" class="modal">
-                <div class="modal-content">
-                  <span class="close">&times;</span>
-                  <p class="change">Tem certeza que deseja excluir este pet?</p>
-                  <a class="redirect" href="/pet/delete/{{pet.id}}/"><button class="delete">Deletar</button></a>
-                </div>
-              </div>
-        </div>
     </div>
     <div class="footer">
         <footer>
@@ -219,7 +275,7 @@
 
     del.onclick = function(){
         mcontent.style.backgroundColor = "green";
-        pmodal.innerHTML = "Pet deletado com sucesso";
+        pmodal.innerHTML = "Cliente desvinculado";
         span.style.display = "none";
         del.style.display = "none";
     }

@@ -51,6 +51,7 @@ urlpatterns = [
     path('servico/<id>/mudanca',views.muda_servico),
     path('servico/<id>/submit', views.muda_servico2),
     path('servico/<id>/delete', views.delete_servico),
+    path('pet/datalhe/<id>/servicos',views.get_servicos),
     path('todos-pets/', views.hotel_pets),
     path('', views.index),
 
