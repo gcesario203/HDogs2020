@@ -46,6 +46,11 @@ urlpatterns = [
     path('meu-cliente/<id>/pets/', views.tudo_pet),
     path('cadastrar-servico/',views.cadastrar_servico),
     path('cadastrar-servico/submit',views.post_servico),
+    path('monitor/servicos/<id>', views.monitor_servicos),
+    path('servico/<id>', views.detalhes_servico),
+    path('servico/<id>/mudanca',views.muda_servico),
+    path('servico/<id>/submit', views.muda_servico2),
+    path('servico/<id>/delete', views.delete_servico),
     path('todos-pets/', views.hotel_pets),
     path('', views.index),
 

@@ -54,10 +54,10 @@
     .nav-1{
         display: grid;
         list-style: none;
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
         grid-gap: 10px;
         grid-template-areas: 
-        'botao-2 botao-1 botao-4 botao-6 botao-3';
+        'botao-2 botao-1 botao-4 botao-3';
     }
     .nav-1 .cadastro{
         grid-area:botao-1;
@@ -111,8 +111,7 @@
         margin:5px 80px 5px 80px;
         background-color:white;
         display: grid;
-        grid-template-columns: repeat(2,1fr);
-        grid-gap: 24px;
+        grid-template-columns:1fr;
         border:solid 1px black;
     }
     .pet{
@@ -173,6 +172,35 @@
             font-size:18px;
         }
 
+        .tabela{
+            margin:10px 200px;
+        }
+
+        .tabela tr,td,th{
+            border:solid 1px black;
+            border-collapse: collapse;
+            padding:10px;
+        }
+
+        .tabela th{
+            background-color:tomato;
+            border-radius: 5px;
+        }
+        .tabela td{
+            text-align: center;
+        }
+
+        .tabela .botao{
+            border-radius: 20px;
+            background-color:tomato;
+            opacity: 0.3;
+            transition: 0.3s;
+        }
+        .tabela .botao:hover{
+            opacity: 1;
+           
+        }
+
 </style>
 <body>
     <div class="header">
@@ -185,32 +213,31 @@
                 <li class='cadastro'><a href="/todos-pets/">Todos os pets</a></li>
                 <li class='minha-pagina'><a href="/monitor/{{monitor.id}}">Minha pagina</a></li>
                 <li class='novo-cliente'><a href='/rel_cliente'>Clientes disponíveis</a></li>
-                <li class='meus-servicos'><a href="/monitor/servicos/{{monitor.id}}">Meus servicos</a></li>
                 <li class='logout'><a href="/logout/">Encerrar sessão</a></li>
             </ul>
     </div>
     <div class="conteudo">
-        {%if cliente%}
-            {%for clientes in cliente%}
-            <div class="pet">
-                <h3>Nome:{{clientes.nome}}</h3>
-                <h3>Email:{{clientes.email}}</h3>
-                <h3>Telefone:{{clientes.tel}}</h3>
-                <div class="botoes">
-                    <button class=""><a href="/meu-cliente/{{clientes.id}}">Detalhes</a></button>
-                    <button id="myBtn">Desvincular</button>
-                    <div id="myModal" class="modal">
-                    <div class="modal-content">
-                        <span class="close">&times;</span>
-                        <p class="change">Tem certeza que deseja desvincular este cliente?</p>
-                        <a class="redirect" href="/monitor/leave_cliente/{{clientes.id}}"><button class="delete">Deletar</button></a>
-                    </div>
-              </div>
-                </div>
-            </div>
+        {%if servicos%}
+        <table class='tabela'>
+            <h1 align="center">Serviços cadastrados por você</h1>
+            <tr>
+                <th>Serviço</th>
+                <th>Pet</th>
+                <th>Dono</th>
+                <th>Data e hora de criação</th>
+            </tr>
+            {%for servico in servicos%}
+            <tr>
+                <td>{{servico.nome}}</td>
+                <td>{{servico.pet.nome_pet}}</td>
+                <td>{{servico.pet.dono.nome}}</td>
+                <td>{{servico.data}}</td>
+                <td class="botao"><a href='/servico/{{servico.id}}'>Detalhes</a></td>
+            </tr>
             {%endfor%}
+        </table>
         {%else%}
-            <h1>Você não possui nenhum cliente</h1>
+            <h1>Você não possui nenhum servicos cadastrado</h1>
         {%endif%}
     </div>
     <div class="footer">

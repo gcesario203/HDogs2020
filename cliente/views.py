@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.views.decorators.csrf import csrf_protect
 from .models import *
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 
 #Views relacionadas ao login e as autorizações
@@ -321,12 +322,13 @@ def set_monitor(request):#Metodo em que os dados do front são passados ao db em
 @login_required(login_url='/login/')
 def cadastrar_servico(request):
     cliente_id = request.GET.get('id')
+
     if cliente_id:
         monitor = Monitor.objects.get(user = request.user)
         cliente = Cliente.objects.get(monitor_escolhido= monitor, id=cliente_id)
         pet = Pet.objects.filter(dono = cliente)
 
-        return render(request, 'cadastro-servico.html',{'monitor':monitor,'cliente':cliente,'pet':pet})
+        return render(request, 'cadastro-servico.html',{'monitor':monitor,'pet':pet})
     else:
         return redirect('/monitor/')
 
@@ -335,9 +337,62 @@ def post_servico(request):
     pet_id = request.POST.get('pet')
     nome = request.POST.get('nome')
     detalhes = request.POST.get('detalhes')
+    servico_id = request.POST.get('servico-id')
     monitor = Monitor.objects.get(user = request.user)
     pet = Pet.objects.get(id=pet_id)
 
+    if servico_id:
+        servico = Servicos.objects.get(id = servico_id)
+        servico.nome = nome
+        servico.detalhes = detalhes
+        servico.save()
 
-    servico = Servicos.objects.create(_nome=nome,_detalhes=detalhes,pet=pet,monitor=monitor)
-    return redirect('/logout/')
+    else:
+        servico = Servicos.objects.create(_nome=nome,_detalhes=detalhes,pet=pet,monitor=monitor)
+        return redirect('/logout/')
+
+@login_required(login_url='/login/')
+def monitor_servicos(request,id):
+    monitor = Monitor.objects.get(user = request.user,id=id)
+    servicos = Servicos.objects.filter(monitor=monitor)
+
+    return render(request, 'meus-servicos.html',{'monitor':monitor,'servicos':servicos})
+
+@login_required(login_url='/login/')
+def detalhes_servico(request,id):
+    monitor = Monitor.objects.get(user = request.user)
+    servico = Servicos.objects.get(monitor=monitor, id=id)
+
+    return render(request, 'servico.html',{'monitor':monitor,'servico':servico})
+
+@login_required(login_url='/login/')
+def muda_servico(request,id):
+    monitor = Monitor.objects.get(user = request.user)
+    servico = Servicos.objects.get(monitor=monitor, id=id)
+
+    return render(request, 'relatorio.html',{'monitor':monitor,'servico':servico})
+
+@login_required(login_url='/login/')
+def muda_servico2(request,id):
+    monitor = Monitor.objects.get(user = request.user)
+    servico = Servicos.objects.get(monitor=monitor,id=id)
+    nome = request.POST.get('nome')
+    detalhes = request.POST.get('detalhes')
+    id = request.POST.get('servico-id')
+
+    if id:
+        servico.nome = nome
+        servico.detalhes = detalhes
+        servico.data = timezone.now()
+        servico.save()
+
+        return redirect('/monitor/servicos/{}'.format(monitor.id))
+
+@login_required(login_url='/login/')
+def delete_servico(request,id):
+    monitor = Monitor.objects.get(user = request.user)
+    servico = Servicos.objects.get(monitor=monitor, id=id)
+
+    servico.delete()
+
+    return redirect('/monitor/servicos/{}'.format(monitor.id))

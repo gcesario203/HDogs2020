@@ -49,15 +49,15 @@
     }
     .nav{
         grid-area:navegacao;
-        margin:0px 300px 5px 80px;
+        margin:0px 500px 5px 80px;
     }
     .nav-1{
         display: grid;
         list-style: none;
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr;
         grid-gap: 10px;
         grid-template-areas: 
-        'botao-2 botao-1 botao-4 botao-6 botao-3';
+        'botao-1 botao-2';
     }
     .nav-1 .cadastro{
         grid-area:botao-1;
@@ -67,39 +67,11 @@
         border-radius: 4px;
     }
     .nav-1 .logout{
-        grid-area:botao-3;
+        grid-area:botao-2;
         padding:4px;
         border:solid 1px black;
         background-color:tomato;
         border-radius: 5px;
-    }
-    .nav-1 .minha-pagina{
-        grid-area:botao-2;
-        padding:4px;
-        background-color:white;
-        border:solid 1px black;
-        border-radius: 4px;
-    }
-    .nav-1 .meus-servicos{
-        grid-area:botao-6;
-        padding:4px;
-        background-color:white;
-        border:solid 1px black;
-        border-radius: 4px;
-    }
-    .nav-1 .novo-cliente{
-        grid-area:botao-4;
-        padding:4px;
-        background-color:white;
-        border:solid 1px black;
-        border-radius: 4px;
-    }
-    .nav-1 .novo-servico{
-        grid-area:botao-5;
-        padding:4px;
-        background-color:white;
-        border:solid 1px black;
-        border-radius: 4px;
     }
     a{
         text-decoration: none;
@@ -111,7 +83,7 @@
         margin:5px 80px 5px 80px;
         background-color:white;
         display: grid;
-        grid-template-columns: repeat(2,1fr);
+        grid-template-columns: 1fr;
         grid-gap: 24px;
         border:solid 1px black;
     }
@@ -173,6 +145,7 @@
             font-size:18px;
         }
 
+
 </style>
 <body>
     <div class="header">
@@ -182,36 +155,28 @@
     </div>
     <div class="nav">
             <ul class="nav-1">
-                <li class='cadastro'><a href="/todos-pets/">Todos os pets</a></li>
-                <li class='minha-pagina'><a href="/monitor/{{monitor.id}}">Minha pagina</a></li>
-                <li class='novo-cliente'><a href='/rel_cliente'>Clientes disponíveis</a></li>
-                <li class='meus-servicos'><a href="/monitor/servicos/{{monitor.id}}">Meus servicos</a></li>
+                <li class='cadastro'><a href="/monitor/servicos/{{monitor.id}}">Retornar a lista</a></li>
                 <li class='logout'><a href="/logout/">Encerrar sessão</a></li>
             </ul>
     </div>
     <div class="conteudo">
-        {%if cliente%}
-            {%for clientes in cliente%}
-            <div class="pet">
-                <h3>Nome:{{clientes.nome}}</h3>
-                <h3>Email:{{clientes.email}}</h3>
-                <h3>Telefone:{{clientes.tel}}</h3>
-                <div class="botoes">
-                    <button class=""><a href="/meu-cliente/{{clientes.id}}">Detalhes</a></button>
-                    <button id="myBtn">Desvincular</button>
-                    <div id="myModal" class="modal">
-                    <div class="modal-content">
-                        <span class="close">&times;</span>
-                        <p class="change">Tem certeza que deseja desvincular este cliente?</p>
-                        <a class="redirect" href="/monitor/leave_cliente/{{clientes.id}}"><button class="delete">Deletar</button></a>
-                    </div>
-              </div>
+        <div class="pet">
+            <h3>Nome:{{servico.nome}}</h3>
+            <h3>Detalhes:{{servico.detalhes}}</h3>
+            <h3>Data:{{servico.data}}</h3>
+        </div>
+        <div class="botoes">
+            <button class=""><a href="/servico/{{servico.id}}/mudanca">Alterar campos</a></button>
+            <button id="myBtn">Deletar</button>
+            <div id="myModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <p class="change">Tem certeza que deseja excluir este servico?</p>
+                    <a class="redirect" href="/servico/{{servico.id}}/delete"><button class="delete">Deletar</button></a>
                 </div>
-            </div>
-            {%endfor%}
-        {%else%}
-            <h1>Você não possui nenhum cliente</h1>
-        {%endif%}
+          </div>
+            
+        </div>
     </div>
     <div class="footer">
         <footer>
@@ -250,7 +215,7 @@
 
     del.onclick = function(){
         mcontent.style.backgroundColor = "green";
-        pmodal.innerHTML = "Cliente desvinculado";
+        pmodal.innerHTML = "Serviço excluido";
         span.style.display = "none";
         del.style.display = "none";
     }
