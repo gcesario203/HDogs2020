@@ -349,7 +349,7 @@ def post_servico(request):
 
     else:
         servico = Servicos.objects.create(_nome=nome,_detalhes=detalhes,pet=pet,monitor=monitor)
-        return redirect('/logout/')
+        return redirect('/monitor/servicos/{}'.format(monitor.id))
 
 @login_required(login_url='/login/')
 def monitor_servicos(request,id):
