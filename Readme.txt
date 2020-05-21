@@ -18,11 +18,10 @@ OBS *3 = Para iniciar o projeto siga as instruções:
 	- criar uma venv com o comando(caso windows): python -m venv *nomedavenv
  - Caso venv ja instalada ou usuário de Linux:
 	- ativar a venv:
-		- caso windows: ir para o diretório da venv e rodar o comando:
-					venv\Scripts\activate.
-		- caso linux: ir para o diretorio da venv e usar o comando: 								venv/bin/activate.
-	- com a venv ativa: usar o comando pip install -r requirements.txt para instalar 		as dependencias necessarias do Django.
+		- caso windows: ir para o diretório da venv e rodar o comando: venv\Scripts\activate.
+		- caso linux: ir para o diretorio da venv e usar o comando: venv/bin/activate.					
+	- com a venv ativa: usar o comando pip install -r requirements.txt para instalar as dependencias necessarias do Django.
 
-	- Com tudo instalado: usar o comando python manage.py runser(caso windows 7, para 		qualquer comando citado que tenho python, trocar para py) e clicar com o 		control segurado no link: localhost:8000 para ser direcionado a tela de 		login do projeto.
+	- Com tudo instalado: usar o comando python manage.py runser(caso windows 7, para qualquer comando citado que tenho python, trocar para py) e clicar com o control segurado no link: localhost:8000 para ser direcionado a tela de login do projeto.
 
 	- Por fim,manuseie o projeto a seu gosto e vontade ;)
