@@ -1,0 +1,64 @@
+{%load static%}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/escolhe-monitor.css' %}">
+    <title>Ola,{{cliente.nome}}</title>
+</head>
+<body>
+    <div class="header">
+            <img class="logo" src="{% static 'assets/imgs/logo.png' %}" alt="My image">
+            <h1 class="user">Ola,{{cliente.nome}}</h1>
+            <h1 class="title">Hotel de cachorro</h1>
+    </div>
+    <div class="nav">
+            <ul class="nav-1">
+                <li class='cadastro'><a href="/pet/register/">Cadastrar novo pet</a></li>
+                <li class='minha-pagina'><a href="/minha-pagina/{{cliente.id}}">Minha página</a></li>
+                <li class='logout'><a href="/logout/">Encerrar sessão</a></li>
+                <li class='pets'><a href="/">Retornar aos meus pets</a></li>
+            </ul>
+    </div>
+    <div class="conteudo">
+        {%if cliente.monitor_escolhido%}
+            <div class="com-monitor">
+                <h3>Você ja tem um monitor para cuidar do seu pet</h3>
+                <div class='botoes'>
+                    <button><a href='/monitor-escolhido'>Ver monitor</a></button>
+                    <button id="myBtn">Desvincular</button>
+                    <div id="myModal" class="modal">
+                        <div class="modal-content">
+                          <span class="close">&times;</span>
+                          <p class="change">Tem certeza que deseja desvincular este monitor?</p>
+                          <a class="redirect" href="/monitor-escolhido/leave-monitor"><button class="delete">Deletar</button></a>
+                        </div>
+                      </div>
+                </div>
+            </div>
+        {%else%}
+            {%if monitor%}
+                {%for x in monitor %}
+                <div class="pet">
+                    <h3>ID:{{x.id}}</h3>
+                    <h3>Nome:{{x.nome}}</h3>
+                    <h3>Email:{{x.email}}</h3>
+                    <h3>Telefone:{{x.tel}}</h3>
+                    <button><a href='/monitores-disponiveis/{{x.id}}/select'>Escolher</a></button>
+                </div>
+                {%endfor%}
+            {%else%}
+                <h1>Nenhum nenhum monitor disponível</h1>
+            {%endif%}
+        {%endif%}
+       </div>
+    <div class="footer">
+        <footer>
+            <h2>Ciência da Computação - 2020</h2>
+        </footer>
+    </div>
+    <script src="{%static 'assets/js/escolhe-monitor.js'%}"></script>
+</body>
+</html>

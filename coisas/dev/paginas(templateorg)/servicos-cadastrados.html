@@ -1,0 +1,54 @@
+{%load static%}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/servicos-cadastrados.css' %}">
+    <title>Ola,{{cliente.nome}}</title>
+</head>
+<body>
+    <div class="header">
+            <img class="logo" src="{% static 'assets/imgs/logo.png' %}" alt="My image">
+            <h1 class="user">Ola,{{cliente.nome}}</h1>
+            <h1 class="title">Hotel de cachorro</h1>
+    </div>
+    <div class="nav">
+            <ul class="nav-1">
+                <li class='cadastro'><a href="/">Meus pets</a></li>
+                <li class='minha-pagina'><a href="/minha-pagina/{{cliente.id}}">Minha pagina</a></li>
+                <li class='logout'><a href="/logout/">Encerrar sessão</a></li>
+            </ul>
+    </div>
+    <div class="conteudo">
+            {%if servicos%}
+            <table class='tabela'>
+                <h1 align="center">Serviços cadastrados para {{pet.nome_pet}}</h1>
+                <tr>
+                    <th>Serviço</th>
+                    <th>Detalhes</th>
+                    <th>Monitor</th>
+                    <th>Data e hora de criação</th>
+                </tr>
+                {%for servico in servicos%}
+                <tr>
+                    <td>{{servico.nome}}</td>
+                    <td>{{servico.detalhes}}</td>
+                    <td>{{servico.monitor.nome}}</td>
+                    <td>{{servico.data}}</td>
+                </tr>
+                {%endfor%}
+            </table>
+            {%else%}
+                <h1>Você não possui nenhum servicos cadastrado</h1>
+            {%endif%}
+    </div>
+    <div class="footer">
+        <footer>
+            <h2>Ciência da Computação - 2020</h2>
+        </footer>
+    </div>
+    <script src="{%static 'assets/js/servicos-cadastrados.js'%}"></script>
+</body>
+</html>

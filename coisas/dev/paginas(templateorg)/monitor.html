@@ -1,0 +1,57 @@
+{%load static%}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/monitor.css' %}">
+    <title>Ola,{{monitor.nome}}</title>
+</head>
+<body>
+    <div class="header">
+            <img class="logo" src="{% static 'assets/imgs/logo.png' %}" alt="My image">
+            <h1 class="user">Ola,{{monitor.nome}}</h1>
+            <h1 class="title">Hotel de cachorro</h1>
+    </div>
+    <div class="nav">
+            <ul class="nav-1">
+                <li class='cadastro'><a href="/todos-pets/">Todos os pets</a></li>
+                <li class='minha-pagina'><a href="/monitor/{{monitor.id}}">Minha pagina</a></li>
+                <li class='novo-cliente'><a href='/rel_cliente'>Clientes disponíveis</a></li>
+                <li class='meus-servicos'><a href="/monitor/servicos/{{monitor.id}}">Meus servicos</a></li>
+                <li class='logout'><a href="/logout/">Encerrar sessão</a></li>
+            </ul>
+    </div>
+    <div class="conteudo">
+        {%if cliente%}
+            {%for clientes in cliente%}
+            <div class="pet">
+                <h3>Nome:{{clientes.nome}}</h3>
+                <h3>Email:{{clientes.email}}</h3>
+                <h3>Telefone:{{clientes.tel}}</h3>
+                <div class="botoes">
+                    <button class=""><a href="/meu-cliente/{{clientes.id}}">Detalhes</a></button>
+                    <button id="myBtn">Desvincular</button>
+                    <div id="myModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <p class="change">Tem certeza que deseja desvincular este cliente?</p>
+                        <a class="redirect" href="/monitor/leave_cliente/{{clientes.id}}"><button class="delete">Deletar</button></a>
+                    </div>
+              </div>
+                </div>
+            </div>
+            {%endfor%}
+        {%else%}
+            <h1>Você não possui nenhum cliente</h1>
+        {%endif%}
+    </div>
+    <div class="footer">
+        <footer>
+            <h2>Ciência da Computação - 2020</h2>
+        </footer>
+    </div>
+    <script src="{%static 'assets/js/monitor.js'%}"></script>
+</body>
+</html>

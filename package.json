@@ -1,0 +1,34 @@
+{
+  "name": "ProjetoIntegrador2020",
+  "version": "1.0.0",
+  "description": "Gabriel Fernando da Silva Cesario\r Amanda Marques Audizio\r Vinius Gabriel da Silva David\r Gabriel Palheiro dos Santos\r Pedro Trinca\r Marcos Bastos Garcia",
+  "main": "gulpfile.js",
+  "dependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "1.6.1",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-cli": "^2.2.1",
+    "gulp-htmlmin": "^5.0.1",
+    "gulp-uglify": "^3.0.2",
+    "gulp-uglifycss": "^1.1.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.6",
+    "@babel/preset-env": "^7.9.6"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gcesario203/HDogs2020.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gcesario203/HDogs2020/issues"
+  },
+  "homepage": "https://github.com/gcesario203/HDogs2020#readme"
+}
