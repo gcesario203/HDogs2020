@@ -16,7 +16,7 @@ OBS *2 = Caso alguém vá editar algo em relação ao front, seguir comandos:
 OBS *3 = Para iniciar o projeto siga as instruções:
  - Caso não tiver o python instalado:
 	- baixar e instalar o python
-	- no terminal(vscode ou cmg), usar o comando python get-pip.py
+	- no terminal(vscode ou cmd), usar o comando python get-pip.py
 	- criar uma venv com o comando(caso windows): python -m venv *nomedavenv
  - Caso venv ja instalada ou usuário de Linux:
 	- ativar a venv:
