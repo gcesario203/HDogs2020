@@ -5,43 +5,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/pet.css' %}">
     <title>Ola,{{cliente.nome}}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/monitor-escolhido.css' %}">
 </head>
 <body>
     <div class="header">
             <img class="logo" src="{% static 'assets/imgs/logo.png' %}" alt="My image">
             <h1 class="user">Ola,{{cliente.nome}}</h1>
-            <h1 class="title">Hotel de cachorro</h1>
+            <h1 class="title">La Pet Hotel</h1>
     </div>
     <div class="nav">
             <ul class="nav-1">
                 <li class='cadastro'><a href="/pet/register/">Cadastrar novo pet</a></li>
                 <li class='logout'><a href="/logout/">Encerrar sessão</a></li>
+                <li class='monitor'><a href="/">Retornar aos meus pets</a></li>
             </ul>
     </div>
     <div class="conteudo">
+        {%if cliente.monitor_escolhido%}
         <div class="pet">
-            <h3>Nome:{{pet.nome_pet}}</h3>
-            <h3>Tipo:{{pet.tipo}}</h3>
-            <h3>Espécie:{{pet.especie}}</h3>
-            <h3>Ração:{{pet.racao}}</h3>
-            <h3>Data de entrada:{{pet.data_entrada}}</h3>
-        </div>
-        <div class="botoes">
-            <button class=""><a href="/">Retornar a lista</a></button>
-            <button class=""><a href="/pet/register/?id={{pet.id}}">Alterar campos</a></button>
-            {%if servicos%}
-            <button class=""><a href="/pet/datalhe/{{pet.id}}/servicos">Serviços</a></button>
-            {%endif%}
-            <button id="myBtn">Excluir</button>
+            <h3>Nome:{{cliente.monitor_escolhido.nome}}</h3>
+            <h3>CPF:{{cliente.monitor_escolhido.CPF}}</h3>
+            <h3>E-mail:{{cliente.monitor_escolhido.email}}</h3>
+            <h3>Telefone:{{cliente.monitor_escolhido.tel}}</h3>
+
+            <button id="myBtn">Desvincular</button>
             <div id="myModal" class="modal">
                 <div class="modal-content">
                   <span class="close">&times;</span>
-                  <p class="change">Tem certeza que deseja excluir este pet?</p>
-                  <a class="redirect" href="/pet/delete/{{pet.id}}/"><button class="delete">Deletar</button></a>
+                  <p class="change">Tem certeza que deseja desvincular este monitor?</p>
+                  <a class="redirect" href="/monitor-escolhido/leave-monitor"><button class="delete">Deletar</button></a>
                 </div>
               </div>
+        {%else%}
+            <h1>Nenhum monitor</h1>
+            <button><a href='/monitores-disponiveis/'>Encontre um monitor</a></button>
+        {%endif%}
         </div>
     </div>
     <div class="footer">
@@ -49,6 +48,6 @@
             <h2>Ciência da Computação - 2020</h2>
         </footer>
     </div>
-    <script src="{%static 'assets/js/pet.js'%}"></script>
+    <script src="{%static 'assets/js/monitor-escolhido.js'%}"></script>
 </body>
 </html>

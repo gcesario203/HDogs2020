@@ -5,12 +5,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/registro-monitor.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/registro-cliente.css' %}">
     <title>
-        {%if monitor%}
-            Olá, {{monitor.nome}}
+        {%if cliente%}
+            Olá, {{cliente.nome}}
         {%else%}
-            Novo monitor
+            Novo cliente
         {%endif%}
     </title>
 </head>
@@ -18,18 +18,18 @@
     <div class="header">
             <img class="logo" src="{% static 'assets/imgs/logo.png' %}" alt="My image">
             <h1 class="user">
-                {%if monitor%}
-                    Olá, {{monitor.nome}}
+                {%if cliente%}
+                    Olá, {{cliente.nome}}
                 {%else%}
-                    Novo monitor
+                    Novo cliente
                 {%endif%}
             </h1>
-            <h1 class="title">Hotel de cachorro</h1>
+            <h1 class="title">La Pet Hotel</h1>
     </div>
     <div class="nav">
-        {%if monitor%}
+        {%if cliente%}
             <ul class="nav-1">
-                <li class='logout'><a href="/monitor/{{monitor.id}}">Retornar a sua pagina</a></li>
+                <li class='logout'><a href="/minha-pagina/{{cliente.id}}">Retornar a sua pagina</a></li>
             </ul>
         {%else%}
             <ul class="nav-1">
@@ -40,22 +40,22 @@
     <div class="conteudo">
         <div class="pet">
             <h1>
-                {%if monitor%}
+                {%if cliente%}
                     Mudar dados existentes
                 {%else%}
-                    Cadastrar novo monitor
+                    Cadastrar novo cliente
                 {%endif%}
             </h1>
             <div class="formulario">
             <form enctype="multipart/form-data" action="submit", method="POST">{% csrf_token %}
-                <input type="number" class="form-control" name="monitor-id" value="{{monitor.id}}" hidden>
+                <input type="number" class="form-control" name="cliente-id" value="{{cliente.id}}" hidden>
                 <div class="campo">
                     <label for="username">Usuário</label>
-                    <input type="text" name="username" value="{{monitor.user.username}}">
+                    <input type="text" name="username" value="{{cliente.user.username}}">
                 </div>
                 <div class="campo">
                     <label for="password">Senha</label>
-                    <input type="password" name="password" value="{{monitor.user.password}}">
+                    <input type="password" name="password" value="{{cliente.user.password}}">
                 </div>
                 <div class="campo">
                     <label for="Cpassword">Confirme sua senha</label>
@@ -63,23 +63,19 @@
                 </div>
                 <div class="campo">
                     <label for="_nome">Nome</label>
-                    <input type="text" name="_nome" value="{{monitor.nome}}">
+                    <input type="text" name="_nome" value="{{cliente.nome}}">
                 </div>
                 <div class="campo">
                     <label for="_CPF">CPF</label>
-                    <input type="text" name="_CPF"value="{{monitor.CPF}}">
+                    <input type="text" name="_CPF"value="{{cliente.CPF}}">
                 </div>
                 <div class="campo">
                     <label for="_email">E-mail</label>
-                    <input type="email" name="_email" value="{{monitor.email}}"> 
+                    <input type="email" name="_email" value="{{cliente.email}}"> 
                 </div>
                 <div class="campo">
                     <label for="_tel">Telefone</label>
-                    <input type="text" name="_tel" value="{{monitor.tel}}">
-                </div>
-                <div class="campo">
-                    <label for="_CTPS">CTPS</label>
-                    <input type="text" name="_CTPS" value="{{monitor.CTPS}}">
+                    <input type="text" name="_tel" value="{{cliente.tel}}">
                 </div>
                 {%for message in messages%}
                 <div class="erro">
@@ -87,7 +83,7 @@
                 </div>
                 {%endfor%}
                 <button class="cadastro" type="submit">
-                    {%if monitor%}
+                    {%if cliente%}
                         Alterar
                     {%else%}
                         Cadastrar

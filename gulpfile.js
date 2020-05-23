@@ -21,7 +21,7 @@ function js(){
 }
 
 function html(){
-    return src('coisas/paginas(templateorg)/*.html')
+    return src('coisas/dev/paginas/*.html')
         .pipe(htmlmin({
             collapseWhitespace:true
         })).pipe(dest('cliente/templates'))
